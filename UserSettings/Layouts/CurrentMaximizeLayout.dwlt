@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 77748
+  controlID: 86169
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -86,7 +86,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
       y: 21
       width: 1099
       height: 491
-    m_Scale: {x: 0.45462963, y: 0.45462963}
+    m_Scale: {x: 1, y: 1}
     m_Translation: {x: 549.5, y: 245.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -105,10 +105,10 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1208.6761
-      y: -540
-      width: 2417.3523
-      height: 1080
+      x: -549.5
+      y: -245.5
+      width: 1099
+      height: 491
     m_MinimalGUI: 1
   m_defaultScale: 0.45462963
   m_LastWindowPixelSize: {x: 1099, y: 512}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 77749
+  controlID: 86145
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 77666
+  controlID: 86013
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -224,23 +224,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6654fcff
-      m_LastClickedID: -240538
-      m_ExpandedIDs: 6654fcffc267fcff4aa1fcff2abdfcff5cd0fcffac2cfdff1881fdff5e8cfdffe891fdff74fafdff0006feffa218feff0241feff0071feff2891feff9a91feff5029ffff365bffff065dffff04f1ffff50f3ffff1efbffff20fbffff02880000
+      m_SelectedIDs: 3ab90000
+      m_LastClickedID: 47418
+      m_ExpandedIDs: 6654fcffc267fcff4aa1fcff2abdfcffac2cfdffe891fdff74fafdffa218feff0241feff0071feff2891feff9a91feff5029ffff365bffff065dffff04f1ffff50f3ffff1efbffff20fbffff0288000048b900004eb90000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Player
+        m_OriginalName: Player
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 47438
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -557,9 +557,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 240.29147, y: 244.75125, z: -3.2843156}
+    m_Target: {x: 3.2330732, y: -0.6828424, z: -0.017453212}
     speed: 2
-    m_Value: {x: 240.29147, y: 244.75125, z: -3.2843156}
+    m_Value: {x: 3.2330732, y: -0.6828424, z: -0.017453212}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -610,9 +610,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 198.36153
+    m_Target: 3.151062
     speed: 2
-    m_Value: 198.36153
+    m_Value: 3.151062
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -777,7 +777,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 77750
+  controlID: 86146
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -846,22 +846,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Sprites/PlayerCharacters/kai
+    - Assets/Resources/Sprites/Ocean/OceanTown
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Sprites/PlayerCharacters/kai
+  - Assets/Resources/Sprites/Ocean/OceanTown
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Archivos de programa\Unity Projects\Incognita
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 40}
-    m_SelectedIDs: 0a840000
-    m_LastClickedID: 33802
-    m_ExpandedIDs: 000000005482000056820000588200005a8200000a840000c8b0000032b7000008bd000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 08840000
+    m_LastClickedID: 33800
+    m_ExpandedIDs: 000000005482000056820000588200005a8200000a84000076b00000c8b0000032b7000008bd000064c9000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -914,10 +914,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 6654fcff
-    m_LastClickedInstanceID: -240538
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c62300002cae000028ac000038a400004c8400000e8400005cb80000c0c40000
+    m_SelectedInstanceIDs: 3ab90000
+    m_LastClickedInstanceID: 47418
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c62300002cae000028ac000038a400004c8400000e8400005cb80000c0c40000266c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -983,7 +983,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: AnimationWindow
+  m_Name: GridPaintPaletteWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -992,14 +992,14 @@ MonoBehaviour:
     y: 0
     width: 916
     height: 533
-  m_MinSize: {x: 102, y: 121}
+  m_MinSize: {x: 242, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 16}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1022,7 +1022,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 610
     y: 847
-    width: 1139
+    width: 914
     height: 512
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -1065,7 +1065,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -240538
+  m_LastSelectedObjectID: 47418
 --- !u!114 &17
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1154,7 +1154,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 193
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -1212,9 +1212,9 @@ MonoBehaviour:
     m_SearchString: 
   m_ActionsTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: bf7895dc
-    m_LastClickedID: -594184001
-    m_ExpandedIDs: 192a7dc7bf7895dc1503fbf185541f73
+    m_SelectedIDs: 134d9a42
+    m_LastClickedID: 1117408531
+    m_ExpandedIDs: 192a7dc71503fbf185541f73
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1251,9 +1251,18 @@ MonoBehaviour:
         selectedIndex: -1
         scroll: {x: 0, y: 0}
       - itemId: 1275948795
+        selectedIndex: 1
+        scroll: {x: 0, y: 63.5}
+      - itemId: 689967731
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: 998472819
+        selectedIndex: -1
+        scroll: {x: 0, y: 0}
+      - itemId: 403810634
         selectedIndex: 0
         scroll: {x: 0, y: 0}
-      - itemId: 689967731
+      - itemId: -1184013745
         selectedIndex: -1
         scroll: {x: 0, y: 0}
     m_ManualPathEditMode: 0
@@ -1267,8 +1276,13 @@ MonoBehaviour:
       \"type\": \"Value\",\n                    \"id\": \"5050b7b9-3ee6-4898-86da-23ca662b7e0e\",\n                   
       \"expectedControlType\": \"Vector2\",\n                    \"processors\":
       \"\",\n                    \"interactions\": \"\",\n                    \"initialStateCheck\":
-      true\n                }\n            ],\n            \"bindings\": [\n               
-      {\n                    \"name\": \"WASD\",\n                    \"id\": \"6592a67a-86e1-4d24-83db-5b6901d19086\",\n                   
+      true\n                },\n                {\n                    \"name\":
+      \"CharacterSheetToggle\",\n                    \"type\": \"Button\",\n                   
+      \"id\": \"11451ec8-cf12-4341-b578-29ed7ce4b7fd\",\n                    \"expectedControlType\":
+      \"Button\",\n                    \"processors\": \"\",\n                   
+      \"interactions\": \"\",\n                    \"initialStateCheck\": false\n               
+      }\n            ],\n            \"bindings\": [\n                {\n                   
+      \"name\": \"WASD\",\n                    \"id\": \"6592a67a-86e1-4d24-83db-5b6901d19086\",\n                   
       \"path\": \"2DVector\",\n                    \"interactions\": \"\",\n                   
       \"processors\": \"\",\n                    \"groups\": \"\",\n                   
       \"action\": \"PlayerMove\",\n                    \"isComposite\": true,\n                   
@@ -1302,8 +1316,18 @@ MonoBehaviour:
       \"path\": \"<Gamepad>/dpad\",\n                    \"interactions\": \"\",\n                   
       \"processors\": \"\",\n                    \"groups\": \"\",\n                   
       \"action\": \"PlayerMove\",\n                    \"isComposite\": false,\n                   
-      \"isPartOfComposite\": false\n                }\n            ]\n        }\n   
-      ],\n    \"controlSchemes\": []\n}"
+      \"isPartOfComposite\": false\n                },\n                {\n                   
+      \"name\": \"\",\n                    \"id\": \"60dd119f-1bbb-470b-8233-3839a7c17aa4\",\n                   
+      \"path\": \"<Keyboard>/c\",\n                    \"interactions\": \"\",\n                   
+      \"processors\": \"\",\n                    \"groups\": \"\",\n                   
+      \"action\": \"CharacterSheetToggle\",\n                    \"isComposite\":
+      false,\n                    \"isPartOfComposite\": false\n                },\n               
+      {\n                    \"name\": \"\",\n                    \"id\": \"1c3c7679-1116-49ee-8715-e0791716147b\",\n                   
+      \"path\": \"<Gamepad>/buttonNorth\",\n                    \"interactions\":
+      \"\",\n                    \"processors\": \"\",\n                    \"groups\":
+      \"\",\n                    \"action\": \"CharacterSheetToggle\",\n                   
+      \"isComposite\": false,\n                    \"isPartOfComposite\": false\n               
+      }\n            ]\n        }\n    ],\n    \"controlSchemes\": []\n}"
     m_IsDirty: 0
   m_Toolbar:
     m_IsDirty: 0
