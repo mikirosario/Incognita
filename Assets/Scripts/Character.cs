@@ -204,7 +204,7 @@ public class CharacterAttribute
 
 	private void RecalculateAttribute()
 	{
-		while (Modifier_SumBaseValueDifferences(Bonus) > 0 || Modifier_SumBaseValueDifferences(Malus) > 0)
+		while (Modifier_SumBaseValueDifferences(Bonus) > 0 && Modifier_SumBaseValueDifferences(Malus) > 0)
 		{
 			RecalculateBonuses();
 			RecalculateMaluses();
