@@ -1,31 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using System;
 using UnityEngine;
-
-public interface ICharacter
-{
-	public CharacterAttribute Attack { get; }
-	public CharacterAttribute Defence { get; }
-	public CharacterAttribute Shield { get; }
-	public CharacterAttribute HitChance { get; }
-	public CharacterAttribute Evasion { get; }
-	public uint ResonancePointsMax { get; }
-	public uint ResonancePointsCurrent { get; }
-	public uint HitPointsMax { get; }
-	public uint HitPointsCurrent { get; }
-	public void ReceiveDamage(uint damage);
-	public void CauseDamage(uint damage, Character target);
-	public void ReceiveHealing(uint healing);
-	public void CauseHealing(uint healing, Character target);
-	public void ReceiveAttackModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveDefenceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveShieldModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveHitChanceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveEvasionModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void UseItem(IConsumable item, Character target);
-}
 
 public class Character : MonoBehaviour, ICharacter
 {
@@ -45,6 +23,12 @@ public class Character : MonoBehaviour, ICharacter
 	public CharacterAttribute Shield { get; private set; }
 	public CharacterAttribute HitChance { get; private set; }
 	public CharacterAttribute Evasion { get; private set; }
+
+	private void Awake()
+	{
+		Init(12, 6, 12, 12, 3, 8, 4); //these will probably eventually be supplied by a scriptable object coming from a save file
+	}
+
 	public void ReceiveDamage(uint damage)
 	{
 		if (HitPointsCurrent > 0)
@@ -95,8 +79,53 @@ public class Character : MonoBehaviour, ICharacter
 	{
 		item.ApplyEffect(target);
 	}
+	private void Init(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
+	{
+		HitPointsMax = maxHP;
+		HitPointsCurrent = HitPointsMax;
+		ResonancePointsMax = maxRP;
+		ResonancePointsCurrent = ResonancePointsMax;
+		Attack = new CharacterAttribute(attack);
+		Defence = new CharacterAttribute(defence);
+		Shield = new CharacterAttribute(shield);
+		HitChance = new CharacterAttribute(hitChance);
+		Evasion = new CharacterAttribute(evasion);
+	}
+	//public Character(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
+	//{
+	//	HitPointsMax = maxHP;
+	//	HitPointsCurrent = HitPointsMax;
+	//	ResonancePointsMax = maxRP;
+	//	ResonancePointsCurrent = ResonancePointsMax;
+	//	Attack = new CharacterAttribute(attack);
+	//	Defence = new CharacterAttribute(defence);
+	//	Shield = new CharacterAttribute(shield);
+	//	HitChance = new CharacterAttribute(hitChance);
+	//	Evasion = new CharacterAttribute(evasion);
+	//}
 }
-
+public interface ICharacter
+{
+	public CharacterAttribute Attack { get; }
+	public CharacterAttribute Defence { get; }
+	public CharacterAttribute Shield { get; }
+	public CharacterAttribute HitChance { get; }
+	public CharacterAttribute Evasion { get; }
+	public uint ResonancePointsMax { get; }
+	public uint ResonancePointsCurrent { get; }
+	public uint HitPointsMax { get; }
+	public uint HitPointsCurrent { get; }
+	public void ReceiveDamage(uint damage);
+	public void CauseDamage(uint damage, Character target);
+	public void ReceiveHealing(uint healing);
+	public void CauseHealing(uint healing, Character target);
+	public void ReceiveAttackModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
+	public void ReceiveDefenceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
+	public void ReceiveShieldModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
+	public void ReceiveHitChanceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
+	public void ReceiveEvasionModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
+	public void UseItem(IConsumable item, Character target);
+}
 public class CharacterAttribute
 {
 	public enum ModifierType
@@ -110,17 +139,19 @@ public class CharacterAttribute
 	public MalusList Malus { get; private set; }
 	public uint MalusTotal { get { return Modifier_SumValues(Malus); } }
 	public uint BonusTotal { get { return Modifier_SumValues(Bonus); } }
+	private StringBuilder ReusableString { get; }
 	internal CharacterAttribute(uint baseAttribute, BonusList bonus = null, MalusList malus = null)
 	{
 		BaseAttribute = baseAttribute;
 		Bonus = bonus == null ? new BonusList() : bonus;
 		Malus = malus == null ? new MalusList() : malus;
+		ReusableString = new StringBuilder(20);
 	}
-	internal CharacterAttribute(uint baseAttribute, MalusList malus = null, BonusList bonus = null)
+	public override string ToString()
 	{
-		BaseAttribute = baseAttribute;
-		Bonus = bonus == null ? new BonusList() : bonus;
-		Malus = malus == null ? new MalusList() : malus;
+		ReusableString.Clear();
+		ReusableString.Append(Attribute);
+		return ReusableString.ToString();
 	}
 	private uint Modifier_SumValues(List<Modifier> modifierList)
 	{
@@ -219,13 +250,13 @@ public class CharacterAttribute
 
 		public string Description
 		{
-			get { return string.Format("{0} from {1}", Value, Name); } //Use with Localization.Manager -Miki
+			get { return string.Format("{0} from {1}", Value, Name); } //Use with Localization.Manager and BuildString -Miki
 		}
 		public string Name { get; private set; }
 		public uint Value
 		{
 			get { return _value; }
-			internal set { _value = value > _baseValue ? _baseValue : value; }
+			internal set { _value = value > BaseValue ? BaseValue : value; }
 		}
 		public uint BaseValue { get; private set; }
 
@@ -234,6 +265,9 @@ public class CharacterAttribute
 			Name = name;
 			BaseValue = value;
 			Value = BaseValue;
+			Debug.Log("Received value: " + value);
+			Debug.Log("Base value: " + BaseValue);
+			Debug.Log("Recorded value: " + Value);
 		}
 		public bool Equals(Modifier other)
 		{
