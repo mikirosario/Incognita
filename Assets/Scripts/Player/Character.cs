@@ -14,6 +14,7 @@ public class Character : MonoBehaviour, ICharacter
 	
 	private uint _hitPointsCurrent;
 	private uint _resonancePointsCurrent;
+	public Animator Animator { get; set; }
 	public uint ResonancePointsMax { get; set; }
 	public uint HitPointsMax { get; set; }
 	public uint ResonancePointsCurrent { get; private set; }
@@ -81,6 +82,7 @@ public class Character : MonoBehaviour, ICharacter
 	}
 	private void Init(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
 	{
+		Animator = GetComponent<Animator>();
 		HitPointsMax = maxHP;
 		HitPointsCurrent = HitPointsMax;
 		ResonancePointsMax = maxRP;

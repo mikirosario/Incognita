@@ -125,6 +125,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Common",
+            "id": "45993330-1ea2-499b-8a1d-a4244f88b9f5",
+            "actions": [
+                {
+                    "name": "PauseToggle",
+                    "type": "Button",
+                    "id": "23940ca5-a872-4b52-b48a-dd7e502566fc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c2c7cbd7-c1b2-4a98-98be-3e3416ad2d73",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4796df5f-c292-4b06-8a33-2b8f5479d76a",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

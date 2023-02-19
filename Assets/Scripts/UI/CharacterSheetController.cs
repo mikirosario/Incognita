@@ -9,6 +9,7 @@ public class CharacterSheetController : MonoBehaviour
 	[SerializeField] private GameObject _characterSheetPanel;
 	[SerializeField] private TextMeshProUGUI _displayedAttackValue, _displayedDefenceValue, _displayedShieldValue, _displayedHitChanceValue, _displayedEvasionValue, _displayedHitPoints, _displayedResonancePoints;
 	private StringBuilder _stringBuilder = new StringBuilder(20);
+	private char[] _str = new char[20];
 	private PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
 	private TextMeshProUGUI DisplayedAttackValue { get { return _displayedAttackValue; } }
 	private TextMeshProUGUI DisplayedDefenceValue { get { return _displayedDefenceValue; } }
@@ -21,15 +22,14 @@ public class CharacterSheetController : MonoBehaviour
 	private void OnCharacterSheetToggle()
 	{
 		DisplayedAttackValue.text = BuildValueString(PlayerManager.Kai.Attack.Attribute);
-		//DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);
-		//DisplayedShieldValue.text = BuildValueString(PlayerManager.Kai.Shield.Attribute);
-		//DisplayedHitChanceValue.text = BuildValueString(PlayerManager.Kai.HitChance.Attribute);
-		//DisplayedEvasionValue.text = BuildValueString(PlayerManager.Kai.Evasion.Attribute);
-		//DisplayedHitPoints.text = BuildRangeString(PlayerManager.Kai.HitPointsCurrent, PlayerManager.Kai.HitPointsMax);
-		//DisplayedResonancePoints.text = BuildRangeString(PlayerManager.Kai.ResonancePointsCurrent, PlayerManager.Kai.ResonancePointsMax);
+		DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);
+		DisplayedShieldValue.text = BuildValueString(PlayerManager.Kai.Shield.Attribute);
+		DisplayedHitChanceValue.text = BuildValueString(PlayerManager.Kai.HitChance.Attribute);
+		DisplayedEvasionValue.text = BuildValueString(PlayerManager.Kai.Evasion.Attribute);
+		DisplayedHitPoints.text = BuildRangeString(PlayerManager.Kai.HitPointsCurrent, PlayerManager.Kai.HitPointsMax);
+		DisplayedResonancePoints.text = BuildRangeString(PlayerManager.Kai.ResonancePointsCurrent, PlayerManager.Kai.ResonancePointsMax);
 		CharacterSheetPanel.SetActive(!CharacterSheetPanel.activeSelf);
 	}
-
 	private string BuildValueString(uint value)
 	{
 		_stringBuilder.Clear();
