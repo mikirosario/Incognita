@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 	public UIManager UIManager { get; private set; }
 	public PlayerManager PlayerManager { get; private set; }
 	public InputManager InputManager { get; private set; }
-	public bool Paused { get { return InputManager.Common_Pause.Paused; } }
+	public bool Paused { get { return InputManager.Common.PauseToggle.Paused; } }
 
 	private void Awake()
 	{

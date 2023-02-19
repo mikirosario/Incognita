@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 
 public class Exploration_PlayerMove : MonoBehaviour
 {
+	[SerializeField] private PlayerInput _playerInput;
 	[SerializeField] private Rigidbody2D _rb;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private float _speed = 5f;
+	private PlayerInput PlayerInput { get { return _playerInput; } }
 	private Rigidbody2D RigidBody { get { return _rb; } }
 	private Animator Animator { get { return _animator; } }
 	private float Speed { get { return _speed; } }
@@ -21,6 +23,9 @@ public class Exploration_PlayerMove : MonoBehaviour
 		AnimatorVar_IsWalking = Animator.StringToHash("isWalking");
 		AnimatorVar_X = Animator.StringToHash("X");
 		AnimatorVar_Y = Animator.StringToHash("Y");
+		PlayerInput.actions.FindActionMap("Exploration").FindAction("PlayerMove").started += OnPlayerMove;
+		PlayerInput.actions.FindActionMap("Exploration").FindAction("PlayerMove").performed += OnPlayerMove;
+		PlayerInput.actions.FindActionMap("Exploration").FindAction("PlayerMove").canceled += OnPlayerMove;
 	}
 
 	public void UpdatePlayerInputs()
@@ -35,9 +40,10 @@ public class Exploration_PlayerMove : MonoBehaviour
 			Animator.SetBool("isWalking", false);
 	}
 
-	private void OnPlayerMove(InputValue input)
+	private void OnPlayerMove(InputAction.CallbackContext context)
 	{
-		Movement = input.Get<Vector2>();
+		Movement = context.ReadValue<Vector2>();
+		//input.Get<Vector2>();
 		if (GameManager.Instance.Paused == false)
 			UpdatePlayerInputs();
 	}
