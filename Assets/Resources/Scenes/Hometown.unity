@@ -8050,7 +8050,7 @@ GameObject:
   - component: {fileID: 835148701}
   - component: {fileID: 835148702}
   m_Layer: 0
-  m_Name: ExplorationMode
+  m_Name: ExplorationInputs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9322,7 +9322,7 @@ GameObject:
   - component: {fileID: 1268780907}
   - component: {fileID: 1268780908}
   m_Layer: 0
-  m_Name: Common
+  m_Name: CommonInputs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -267,9 +267,6 @@ public class CharacterAttribute
 			Name = name;
 			BaseValue = value;
 			Value = BaseValue;
-			Debug.Log("Received value: " + value);
-			Debug.Log("Base value: " + BaseValue);
-			Debug.Log("Recorded value: " + Value);
 		}
 		public bool Equals(Modifier other)
 		{
