@@ -5,24 +5,28 @@ using UnityEngine.UI;
 
 public class BattleActionPanelController : MonoBehaviour
 {
+    [SerializeField] private StatusMenuController _statusMenuController; //defer to BattleManager or GameManager singleton?
+
     private bool _isAnimating = false;
     [SerializeField] private float _extendedWidth;
+    [SerializeField] private float _shiftSlotPositionBy;
     [SerializeField] private RectTransform _rectTransform;
     [SerializeField] private Toggle[] _toggles;
-    [Range(0f, 1f), SerializeField] private float _speed;
+    [Range(0f, 1f), SerializeField] private float _slideDuration;
+    
     private ActionPanelSettings CurrentPanelSettings { get; set; }
+    private BottomRowController BottomRowController { get; set; }
     private delegate bool TargetReached();
-
-    private Animator Animator { get; set; }
     private bool IsAnimating { get { return _isAnimating; } set { _isAnimating = value; } }
     private float ExtendedWidth { get { return QuickRound(_extendedWidth); } }
     private float CurrentWidth { get { return QuickRound(RectTransform.sizeDelta.x); } }
+    private float ShiftSlotPositionBy { get { return _shiftSlotPositionBy; } }
     private Toggle[] Toggles { get { return _toggles; } }
-    private float Speed { get { return _speed; } set { _speed = Mathf.Clamp(value, 0f, 1f); } }
+    private float SlideDuration { get { return _slideDuration; } set { _slideDuration = Mathf.Clamp(value, 0f, 1f); } }
     private RectTransform RectTransform { get { return _rectTransform; } }
     private void Awake()
 	{
-        Animator = GetComponent<Animator>();
+        BottomRowController = _statusMenuController.BottomRowController;
 	}
 
     private float QuickRound(float num)
@@ -45,56 +49,76 @@ public class BattleActionPanelController : MonoBehaviour
             toggle.enabled = true;
 	}
 
+
+
     private IEnumerator ActionPanelSlideToggle()
 	{
-        if (IsAnimating == false)
+        IsAnimating = true;
+        bool isDone = false;
+        float targetWidth = Mathf.Abs(CurrentWidth - ExtendedWidth);
+        bool isSlidingOut = !(targetWidth == 0f);
+        float currentVelocity = 0.0f;
+        TargetReached targetReached;
+        if (!isSlidingOut)
         {
-            IsAnimating = true;
-            bool isDone = false;
-            float targetWidth = Mathf.Abs(CurrentWidth - ExtendedWidth);
-            float time = 0.0f;
-            bool isSlidingOut = !(targetWidth == 0f);
-            TargetReached targetReached;// = targetWidth == 0f ? () => { return CurrentWidth <= targetWidth + 0.1f; } : () => { return CurrentWidth >= targetWidth - 0.1f; };
-            if (!isSlidingOut)
-            {
-                targetReached = () => { return CurrentWidth <= targetWidth + 0.1f; };
-                DisableToggles();
-            }
-            else
-            {
-                targetReached = () => { return CurrentWidth >= targetWidth - 0.1f; };
-                EnableToggles();
-            }
-            while (isDone == false)
-            {
-                RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Lerp(CurrentWidth, targetWidth, time));
-                time += Speed * Time.deltaTime;
-                yield return null;
-                if (targetReached())
-                {
-                    RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
-                    isDone = true;
-                }
-            }
-            IsAnimating = false;
+            targetReached = () => { return CurrentWidth <= targetWidth + 1f; };
+            DisableToggles();
         }
+        else
+        {
+            targetReached = () => { return CurrentWidth >= targetWidth - 1f; };
+            //change background color to player color
+            EnableToggles();
+        }
+        StartCoroutine(PlayerSlotSlideToggle(isSlidingOut));
+        while (isDone == false)
+        {
+            RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.SmoothDamp(CurrentWidth, targetWidth, ref currentVelocity, SlideDuration));
+            yield return null;
+            if (targetReached())
+            {
+                RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+                isDone = true;
+            }
+        }
+        IsAnimating = false;
     }
 
-    public void ActionPanelSlide()
+	private IEnumerator PlayerSlotSlideToggle(bool isSlidingOut)
+	{
+        bool isDone = false;
+        PlayerSlotController playerSlot = _statusMenuController.BottomRowController.PlayerSlot0; //get selected player slot
+        float targetDiff = isSlidingOut == true ? ShiftSlotPositionBy * -1f : ShiftSlotPositionBy;
+        float targetPos = playerSlot.transform.localPosition.x + targetDiff;
+        float currentVelocity = 0.0f;
+        TargetReached targetReached;
+        if (!isSlidingOut)
+		{
+            targetReached = () => { return playerSlot.transform.localPosition.x >= targetPos - 1f; };
+            //change color to white
+		}
+        else
+		{
+            targetReached = () => { return playerSlot.transform.localPosition.x <= targetPos + 1f; };
+            //change color to player color;
+		}
+        while (isDone == false)
+		{
+            playerSlot.transform.localPosition = new Vector2(Mathf.SmoothDamp(playerSlot.transform.localPosition.x, targetPos, ref currentVelocity, SlideDuration), playerSlot.transform.localPosition.y);
+            yield return null;
+            if (targetReached())
+			{
+                playerSlot.transform.localPosition = new Vector2(targetPos, playerSlot.transform.localPosition.y);
+                isDone = true;
+			}
+		}
+	}
+
+	public void ActionPanelSlide()
 	{
 		if (IsAnimating == false)
 			StartCoroutine(ActionPanelSlideToggle());
-		//      if (IsAnimating == false)
-		//{
-		//          IsAnimating = true;
-		//          Animator.Play("ActionPanelSlideOut");
-		//}
 	}
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
 	private void Update()
 	{
