@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-	[SerializeField] private GameObject[] _playerParty;
+	[SerializeField] private GameObject[] _playerPartyPrefabs;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
+	private Character[] _playerParty = new Character[3];
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
-	private EnemySpawn[] EnemyParty { get; set; }
+	private EnemySpawn[] EnemySpawnPrefabs { get; set; }
+	private GameObject[] PlayerPartyPrefabs { get; set; }
+	public Character[] PlayerParty { get { return _playerParty; } }
+	public GameObject[] EnemyParty { get; private set; }
 
 
 	private void Start()
@@ -21,30 +25,31 @@ public class BattleManager : MonoBehaviour
 		if (areaName == null)
 			areaName = GameManager.CurrentBattleArea;
 		IBattleAreaController battleAreaController = BattleAreaSelector.Get(areaName);
-		if (battleAreaController == null || !GetEnemyParty(battleAreaController))
+		if (battleAreaController == null || !GetEnemySpawnPrefabs(battleAreaController))
 			return; //return to previous scene with error log
-		Spawn(EnemyParty);
+		Spawn(EnemySpawnPrefabs);
 	}
 
-	private bool GetEnemyParty(IBattleAreaController area)
+	private bool GetEnemySpawnPrefabs(IBattleAreaController area)
 	{
 		if (area.Enemies.Count < 1)
 			return false;
 		int enemyNumber = Random.Range(1, area.SpawnPointSelector.EnemyPositionMax + 1);
-		EnemyParty = new EnemySpawn[enemyNumber];
+		EnemySpawnPrefabs = new EnemySpawn[enemyNumber];
 		for (int i = 0; enemyNumber > 0; ++i, --enemyNumber)
 		{
 			GameObject enemyPrefab = area.Enemies[Random.Range(0, area.Enemies.Count)]; //enemies currently selected at random, but eventually there should be predefined groups
 			Transform spawnPosition = area.SpawnPointSelector.GetEnemyPosition(area.SpawnPointSelector.EnemyPositionKeys[i]);
-			EnemyParty[i] = new EnemySpawn(enemyPrefab, spawnPosition);
+			EnemySpawnPrefabs[i] = new EnemySpawn(enemyPrefab, spawnPosition);
 		}
 		return true;
 	}
 
-	private void Spawn(/*GameObject[] playerParty, */EnemySpawn[] enemyParty)
+	private void Spawn(/*GameObject[] playerParty, */EnemySpawn[] enemySpawnPrefabs)
 	{
-		Instantiate(_playerParty[0], new Vector2(-4f, 0f), Quaternion.identity);
-		foreach (EnemySpawn enemy in enemyParty)
+		PlayerParty[0] = (Instantiate(_playerPartyPrefabs[0], new Vector2(-4f, 0f), Quaternion.identity)).GetComponent<Character>();
+		PlayerParty[0].SetBattleMode();
+		foreach (EnemySpawn enemy in enemySpawnPrefabs)
 			Instantiate(enemy.Prefab, enemy.SpawnPosition);
 	}
 
@@ -58,4 +63,5 @@ public class BattleManager : MonoBehaviour
 			SpawnPosition = spawnPosition;
 		}
 	}
+
 }

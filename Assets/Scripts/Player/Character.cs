@@ -7,14 +7,12 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, ICharacter
 {
-	private uint level;
-	//Max should be determined by base defence + equipment modifiers
-	private uint _hitPointsMax;
-	private uint _resonancePointsMax;        //Magic Points
-	
-	private uint _hitPointsCurrent;
-	private uint _resonancePointsCurrent;
-	public Animator Animator { get; set; }
+	[SerializeField] private string _name;
+	[SerializeField] private RuntimeAnimatorController _explorationModeAnimatorController;
+	[SerializeField] private RuntimeAnimatorController _battleModeAnimatorController;
+	public string Name { get { return _name; } }
+	public Color Color { get; private set; }
+	public Animator Animator { get; private set; }
 	public uint ResonancePointsMax { get; set; }
 	public uint HitPointsMax { get; set; }
 	public uint ResonancePointsCurrent { get; private set; }
@@ -24,6 +22,9 @@ public class Character : MonoBehaviour, ICharacter
 	public CharacterAttribute Shield { get; private set; }
 	public CharacterAttribute HitChance { get; private set; }
 	public CharacterAttribute Evasion { get; private set; }
+	public uint Level { get; private set; }
+	private RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
+	private RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
 
 	private void Awake()
 	{
@@ -80,6 +81,15 @@ public class Character : MonoBehaviour, ICharacter
 	{
 		item.ApplyEffect(target);
 	}
+	public void SetExplorationMode()
+	{
+		Animator.runtimeAnimatorController = AnimatorControllerExploration;
+	}
+	public void SetBattleMode()
+	{
+		Animator.runtimeAnimatorController = AnimatorControllerBattle;
+	}
+
 	private void Init(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
 	{
 		Animator = GetComponent<Animator>();
@@ -108,11 +118,14 @@ public class Character : MonoBehaviour, ICharacter
 }
 public interface ICharacter
 {
+	public string Name { get; }
+	public Color Color { get; }
 	public CharacterAttribute Attack { get; }
 	public CharacterAttribute Defence { get; }
 	public CharacterAttribute Shield { get; }
 	public CharacterAttribute HitChance { get; }
 	public CharacterAttribute Evasion { get; }
+	public uint Level { get; }
 	public uint ResonancePointsMax { get; }
 	public uint ResonancePointsCurrent { get; }
 	public uint HitPointsMax { get; }
@@ -127,6 +140,8 @@ public interface ICharacter
 	public void ReceiveHitChanceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
 	public void ReceiveEvasionModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
 	public void UseItem(IConsumable item, Character target);
+	public void SetExplorationMode();
+	public void SetBattleMode();
 }
 public class CharacterAttribute
 {
