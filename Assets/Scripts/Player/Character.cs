@@ -73,67 +73,54 @@ public class Character : MonoBehaviour, ICharacter
 	{
 		Shield.AddModifier(modifier, type);
 	}
+
 	public void ReceiveHitChanceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type)
 	{
 		HitChance.AddModifier(modifier, type);
 	}
+
 	public void ReceiveEvasionModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type)
 	{
 		Evasion.AddModifier(modifier, type);
 	}
+
 	public void UseItem(IConsumable item, Character target)
 	{
 		item.ApplyEffect(target);
 	}
+
 	public void SetExplorationMode()
 	{
 		Animator.runtimeAnimatorController = AnimatorControllerExploration;
 	}
+
 	public void SetBattleMode()
 	{
 		Animator.runtimeAnimatorController = AnimatorControllerBattle;
 	}
 
-	private void Init(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
+	private void Update()
 	{
-		Animator = GetComponent<Animator>();
-		//HitPointsMax = maxHP;
-		//HitPointsCurrent = HitPointsMax;
-		//ResonancePointsMax = maxRP;
-		//ResonancePointsCurrent = ResonancePointsMax;
-		//Attack = new CharacterAttribute(attack);
-		//Defence = new CharacterAttribute(defence);
-		//Shield = new CharacterAttribute(shield);
-		//HitChance = new CharacterAttribute(hitChance);
-		//Evasion = new CharacterAttribute(evasion);
+		if (Input.GetKeyDown(KeyCode.Q))
+			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", uint.MaxValue), CharacterAttribute.ModifierType.Malus);
+		if (Input.GetKeyDown(KeyCode.E))
+			ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", uint.MaxValue), CharacterAttribute.ModifierType.Bonus);
 	}
-	//public Character(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
-	//{
-	//	HitPointsMax = maxHP;
-	//	HitPointsCurrent = HitPointsMax;
-	//	ResonancePointsMax = maxRP;
-	//	ResonancePointsCurrent = ResonancePointsMax;
-	//	Attack = new CharacterAttribute(attack);
-	//	Defence = new CharacterAttribute(defence);
-	//	Shield = new CharacterAttribute(shield);
-	//	HitChance = new CharacterAttribute(hitChance);
-	//	Evasion = new CharacterAttribute(evasion);
-	//}
 }
 public interface ICharacter
 {
 	public string Name { get; }
 	public Color Color { get; }
+	public uint Level { get; }
+	public uint HitPointsMax { get; }
+	public uint HitPointsCurrent { get; }
+	public uint ResonancePointsMax { get; }
+	public uint ResonancePointsCurrent { get; }
 	public CharacterAttribute Attack { get; }
 	public CharacterAttribute Defence { get; }
 	public CharacterAttribute Shield { get; }
 	public CharacterAttribute HitChance { get; }
 	public CharacterAttribute Evasion { get; }
-	public uint Level { get; }
-	public uint ResonancePointsMax { get; }
-	public uint ResonancePointsCurrent { get; }
-	public uint HitPointsMax { get; }
-	public uint HitPointsCurrent { get; }
 	public void ReceiveDamage(uint damage);
 	public void CauseDamage(uint damage, Character target);
 	public void ReceiveHealing(uint healing);
@@ -155,23 +142,31 @@ public interface ICharacter
 		Malus
 	}
 	[SerializeField] private uint _baseAttribute;
+	[ReadOnly, SerializeField] private uint _maxValue = uint.MaxValue;
+	[SerializeField] private List<Modifier> _bonusList;
+	[SerializeField] private List<Modifier> _malusList;
 	public uint Attribute { get { return BaseAttribute + BonusTotal - MalusTotal; } }
 	public uint BaseAttribute { get { return _baseAttribute; } private set { _baseAttribute = value; } }
-	public BonusList Bonus { get; private set; }
-	public MalusList Malus { get; private set; }
+	public BonusList Bonus { get { return (BonusList)_bonusList; } private set { _bonusList = value; } }
+	public MalusList Malus { get { return (MalusList)_malusList; } private set { _malusList = value; } }
 	public uint MalusTotal { get { return Modifier_SumValues(Malus); } }
 	public uint BonusTotal { get { return Modifier_SumValues(Bonus); } }
 	private StringBuilder ReusableString { get; }
-	internal CharacterAttribute(BonusList bonusList = null, MalusList malusList = null)
+	private uint MaxValue { get { return _maxValue; } set { _maxValue = value; } }
+	private uint AttributePointsToMax { get { return MaxValue - Attribute; } }
+	private uint BaseAttributePointsToMax { get { return MaxValue - BaseAttribute; } }
+	internal CharacterAttribute(BonusList bonusList = null, MalusList malusList = null, uint maxValue = uint.MaxValue)
 	{
+		MaxValue = maxValue;
 		BaseAttribute = 0;
 		Bonus = bonusList == null ? new BonusList() : bonusList;
 		Malus = malusList == null ? new MalusList() : malusList;
 		ReusableString = new StringBuilder(20);
 	}
-	internal CharacterAttribute(uint baseAttribute, BonusList bonusList = null, MalusList malusList = null)
+	internal CharacterAttribute(uint baseAttribute, BonusList bonusList = null, MalusList malusList = null, uint maxValue = uint.MaxValue)
 	{
-		BaseAttribute = baseAttribute;
+		MaxValue = maxValue;
+		BaseAttribute = baseAttribute > MaxValue ? MaxValue : baseAttribute;
 		Bonus = bonusList == null ? new BonusList() : bonusList;
 		Malus = malusList == null ? new MalusList() : malusList;
 		ReusableString = new StringBuilder(20);
@@ -179,6 +174,7 @@ public interface ICharacter
 
 	internal CharacterAttribute(CharacterAttribute other)
 	{
+		MaxValue = other.MaxValue;
 		BaseAttribute = other.BaseAttribute;
 		Bonus = other.Bonus;
 		Malus = other.Malus;
@@ -197,6 +193,11 @@ public interface ICharacter
 		ReusableString.Clear();
 		ReusableString.Append(Attribute);
 		return ReusableString.ToString();
+	}
+	public void ClearModifiers()
+	{
+		Bonus.Clear();
+		Malus.Clear();
 	}
 	private uint Modifier_SumValues(List<Modifier> modifierList)
 	{
@@ -224,14 +225,13 @@ public interface ICharacter
 		}
 		else
 		{
-			if (newModifier.Value > uint.MaxValue - Attribute)
-				newModifier.Value = uint.MaxValue - Attribute;
+			if (newModifier.Value > AttributePointsToMax)
+				newModifier.Value = AttributePointsToMax;
 			Bonus.Add(newModifier);
 			if (newModifier.Value > 0)
 				RecalculateMaluses();
 		}
 	}
-
 	internal bool RemoveModifier(string name, ModifierType attributeType)
 	{
 		Predicate<Modifier> pred = (Modifier modifier) => (modifier.Name.Equals(name));
@@ -246,10 +246,49 @@ public interface ICharacter
 		}
 		return false;
 	}
-
+	internal void RaiseBaseAttributeBy(uint value)
+	{
+		uint baseAttributePointsToMax = BaseAttributePointsToMax;
+		uint attributePointsToMax = AttributePointsToMax;
+		if (value > baseAttributePointsToMax)
+			value = baseAttributePointsToMax;
+		if (value > attributePointsToMax)
+			value -= LowerModifiersBy(value - attributePointsToMax, Bonus);
+		BaseAttribute += value;
+	}
+	internal void LowerBaseAttributeBy(uint value)
+	{
+		uint baseAttributePointsToMin = BaseAttribute;
+		uint attributePointsToMin = Attribute;
+		if (value > baseAttributePointsToMin)
+			value = baseAttributePointsToMin;
+		if (value > attributePointsToMin)
+			value -= LowerModifiersBy(value - attributePointsToMin, Malus);
+		BaseAttribute -= value;
+	}
+	private uint LowerModifiersBy(uint value, List<Modifier> modifierList)
+	{
+		if (modifierList.Count == 0 || value == 0)
+			return value;
+		int i = modifierList.Count - 1;
+		do
+		{
+			if (modifierList[i].Value >= value)
+			{
+				modifierList[i].Value -= value;
+				value = 0;
+			}
+			else
+			{
+				value -= modifierList[i].Value;
+				modifierList[i].Value = 0;
+			}
+		} while (i-- > 0 && value > 0);
+		return value;
+	}
 	private void RecalculateBonuses()
 	{
-		uint pointsToMax = uint.MaxValue - Attribute;
+		uint pointsToMax = AttributePointsToMax;
 		for (int i = 0; pointsToMax > 0 && i < Bonus.Count; ++i)
 		{
 			Modifier modifier = Bonus[i];
@@ -277,13 +316,18 @@ public interface ICharacter
 			}
 		}
 	}
-
 	private void RecalculateAttribute()
 	{
-		while (Modifier_SumBaseValueDifferences(Bonus) > 0 && Modifier_SumBaseValueDifferences(Malus) > 0)
+		uint leftoverBonusPoints;
+		uint leftoverMalusPoints;
+		leftoverBonusPoints = Modifier_SumBaseValueDifferences(Bonus);
+		leftoverMalusPoints = Modifier_SumBaseValueDifferences(Malus);
+		while ((leftoverBonusPoints > 0 && Attribute < MaxValue) || (leftoverMalusPoints > 0 && Attribute > 0))
 		{
 			RecalculateBonuses();
 			RecalculateMaluses();
+			leftoverBonusPoints = Modifier_SumBaseValueDifferences(Bonus);
+			leftoverMalusPoints = Modifier_SumBaseValueDifferences(Malus);
 		}
 	}
 	[System.Serializable] public class Modifier : IEquatable<Modifier>
@@ -296,7 +340,7 @@ public interface ICharacter
 		{
 			get { return string.Format("{0} from {1}", Value, Name); } //Use with Localization.Manager and BuildString -Miki
 		}
-		public string Name { get; private set; }
+		public string Name { get { return _name; } private set { _name = value; } }
 		public uint Value
 		{
 			get { return _value; }
@@ -317,7 +361,6 @@ public interface ICharacter
 			return false;
 		}
 	}
-	[System.Serializable]
-	public class MalusList : List<Modifier> {}
-	public class BonusList : List<Modifier> {}
+	[System.Serializable] public class MalusList : List<Modifier> {}
+	[System.Serializable] public class BonusList : List<Modifier> {}
 }

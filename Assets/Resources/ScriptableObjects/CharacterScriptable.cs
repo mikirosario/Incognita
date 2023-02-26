@@ -33,4 +33,13 @@ public class CharacterScriptable : ScriptableObject
 	public CharacterAttribute Shield { get { return _shield; } internal set { _shield = value; } }
 	public CharacterAttribute HitChance { get { return _hitChance; } internal set { _hitChance = value; } }
 	public CharacterAttribute Evasion { get { return _evasion; } internal set { _evasion = value; } }
+
+	private void OnDisable()
+	{
+		Attack.ClearModifiers();
+		Defence.ClearModifiers();
+		Shield.ClearModifiers();
+		HitChance.ClearModifiers();
+		Evasion.ClearModifiers();
+	}
 }
