@@ -5,30 +5,34 @@ using System.Text;
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class Character : MonoBehaviour, ICharacter
 {
-	[SerializeField] private string _name;
+	//[SerializeField] private string _name;
 	[SerializeField] private RuntimeAnimatorController _explorationModeAnimatorController;
 	[SerializeField] private RuntimeAnimatorController _battleModeAnimatorController;
-	public string Name { get { return _name; } }
-	public Color Color { get; private set; }
+	[SerializeField] private CharacterScriptable _characterData;
+	public string Name { get { return CharacterData.Name; } }
+	public Color Color { get { return CharacterData.Color; } private set { CharacterData.Color = value; } }
+	public uint HitPointsMax { get { return CharacterData.HitPointsMax; } private set { CharacterData.HitPointsMax = value; } }
+	public uint HitPointsCurrent { get { return CharacterData.HitPointsCurrent; } private set { CharacterData.HitPointsCurrent = value; } }
+	public uint ResonancePointsMax { get { return CharacterData.ResonancePointsMax; } private set { CharacterData.ResonancePointsMax = value; } }
+	public uint ResonancePointsCurrent { get { return CharacterData.ResonancePointsCurrent; } private set { CharacterData.ResonancePointsCurrent = value; } }
+	public CharacterAttribute Attack { get { return CharacterData.Attack; } private set { CharacterData.Attack = value; } }
+	public CharacterAttribute Defence { get { return CharacterData.Defence; } private set { CharacterData.Defence = value; } }
+	public CharacterAttribute Shield { get { return CharacterData.Shield; } private set { CharacterData.Shield = value; } }
+	public CharacterAttribute HitChance { get { return CharacterData.HitChance; } private set { CharacterData.HitChance = value; } }
+	public CharacterAttribute Evasion { get { return CharacterData.Evasion; } private set { CharacterData.Evasion = value; } }
+	public uint Level { get { return CharacterData.Level; } private set { CharacterData.Level = value; } }
+	private CharacterScriptable CharacterData { get { return _characterData; } }
 	public Animator Animator { get; private set; }
-	public uint ResonancePointsMax { get; set; }
-	public uint HitPointsMax { get; set; }
-	public uint ResonancePointsCurrent { get; private set; }
-	public uint HitPointsCurrent { get; private set; }
-	public CharacterAttribute Attack { get; private set; }
-	public CharacterAttribute Defence { get; private set; }
-	public CharacterAttribute Shield { get; private set; }
-	public CharacterAttribute HitChance { get; private set; }
-	public CharacterAttribute Evasion { get; private set; }
-	public uint Level { get; private set; }
 	private RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
 	private RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
 
 	private void Awake()
 	{
-		Init(12, 6, 12, 12, 3, 8, 4); //these will probably eventually be supplied by a scriptable object coming from a save file
+		Animator = GetComponent<Animator>();
+		//The time has come. ;p Init(12, 6, 12, 12, 3, 8, 4); //these will probably eventually be supplied by a scriptable object coming from a save file
 	}
 
 	public void ReceiveDamage(uint damage)
@@ -93,15 +97,15 @@ public class Character : MonoBehaviour, ICharacter
 	private void Init(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
 	{
 		Animator = GetComponent<Animator>();
-		HitPointsMax = maxHP;
-		HitPointsCurrent = HitPointsMax;
-		ResonancePointsMax = maxRP;
-		ResonancePointsCurrent = ResonancePointsMax;
-		Attack = new CharacterAttribute(attack);
-		Defence = new CharacterAttribute(defence);
-		Shield = new CharacterAttribute(shield);
-		HitChance = new CharacterAttribute(hitChance);
-		Evasion = new CharacterAttribute(evasion);
+		//HitPointsMax = maxHP;
+		//HitPointsCurrent = HitPointsMax;
+		//ResonancePointsMax = maxRP;
+		//ResonancePointsCurrent = ResonancePointsMax;
+		//Attack = new CharacterAttribute(attack);
+		//Defence = new CharacterAttribute(defence);
+		//Shield = new CharacterAttribute(shield);
+		//HitChance = new CharacterAttribute(hitChance);
+		//Evasion = new CharacterAttribute(evasion);
 	}
 	//public Character(uint maxHP, uint maxRP, uint attack, uint defence, uint shield, uint hitChance, uint evasion)
 	//{
@@ -143,27 +147,51 @@ public interface ICharacter
 	public void SetExplorationMode();
 	public void SetBattleMode();
 }
-public class CharacterAttribute
+[System.Serializable] public class CharacterAttribute
 {
 	public enum ModifierType
 	{
 		Bonus,
 		Malus
 	}
+	[SerializeField] private uint _baseAttribute;
 	public uint Attribute { get { return BaseAttribute + BonusTotal - MalusTotal; } }
-	public uint BaseAttribute { get; private set; }
+	public uint BaseAttribute { get { return _baseAttribute; } private set { _baseAttribute = value; } }
 	public BonusList Bonus { get; private set; }
 	public MalusList Malus { get; private set; }
 	public uint MalusTotal { get { return Modifier_SumValues(Malus); } }
 	public uint BonusTotal { get { return Modifier_SumValues(Bonus); } }
 	private StringBuilder ReusableString { get; }
-	internal CharacterAttribute(uint baseAttribute, BonusList bonus = null, MalusList malus = null)
+	internal CharacterAttribute(BonusList bonusList = null, MalusList malusList = null)
 	{
-		BaseAttribute = baseAttribute;
-		Bonus = bonus == null ? new BonusList() : bonus;
-		Malus = malus == null ? new MalusList() : malus;
+		BaseAttribute = 0;
+		Bonus = bonusList == null ? new BonusList() : bonusList;
+		Malus = malusList == null ? new MalusList() : malusList;
 		ReusableString = new StringBuilder(20);
 	}
+	internal CharacterAttribute(uint baseAttribute, BonusList bonusList = null, MalusList malusList = null)
+	{
+		BaseAttribute = baseAttribute;
+		Bonus = bonusList == null ? new BonusList() : bonusList;
+		Malus = malusList == null ? new MalusList() : malusList;
+		ReusableString = new StringBuilder(20);
+	}
+
+	internal CharacterAttribute(CharacterAttribute other)
+	{
+		BaseAttribute = other.BaseAttribute;
+		Bonus = other.Bonus;
+		Malus = other.Malus;
+		ReusableString = other.ReusableString;
+	}
+
+	~CharacterAttribute()
+	{
+		Bonus = null;
+		Malus = null;
+		Debug.Log("Character Attribute Destructor Called");
+	}
+
 	public override string ToString()
 	{
 		ReusableString.Clear();
@@ -258,12 +286,11 @@ public class CharacterAttribute
 			RecalculateMaluses();
 		}
 	}
-
-	public class Modifier : IEquatable<Modifier>
+	[System.Serializable] public class Modifier : IEquatable<Modifier>
 	{
-		private string _name;
+		[SerializeField] private string _name;
 		private uint _value;
-		private uint _baseValue;
+		[SerializeField] private uint _baseValue;
 
 		public string Description
 		{
@@ -275,7 +302,7 @@ public class CharacterAttribute
 			get { return _value; }
 			internal set { _value = value > BaseValue ? BaseValue : value; }
 		}
-		public uint BaseValue { get; private set; }
+		public uint BaseValue { get { return _baseValue; } private set { _baseValue = value; } }
 
 		public Modifier(string name, uint value)
 		{
@@ -290,6 +317,7 @@ public class CharacterAttribute
 			return false;
 		}
 	}
+	[System.Serializable]
 	public class MalusList : List<Modifier> {}
 	public class BonusList : List<Modifier> {}
 }

@@ -32,4 +32,9 @@ public class GameManager : MonoBehaviour
 		Debug.Log(UIManager);
 		Debug.Log(PlayerManager);
 	}
+
+	private void OnDestroy()
+	{
+		Instance = null;
+	}
 }
