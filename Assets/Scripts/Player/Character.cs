@@ -104,6 +104,8 @@ public class Character : MonoBehaviour, ICharacter
 			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
 		if (Input.GetKeyDown(KeyCode.E))
 			ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
+		if (Input.GetKeyDown(KeyCode.F))
+			Attack.SetMaxValue(5);
 	}
 }
 public interface ICharacter
@@ -142,7 +144,6 @@ public interface ICharacter
 	}
 	[SerializeField] private uint _baseAttribute;
 	[ReadOnly, SerializeField] private uint _maxValue = uint.MaxValue;
-	[ContextMenuItem("New Max Value", nameof(SetMaxValueInspector))] public uint _newMaxValue = uint.MaxValue;
 	[SerializeField] private List<Modifier> _bonusList;
 	[SerializeField] private List<Modifier> _malusList;
 	public uint Attribute { get { return BaseAttribute + BonusTotal - MalusTotal; } }
@@ -201,7 +202,7 @@ public interface ICharacter
 	}
 	public void SetMaxValue(uint value)
 	{
-		if (value < BaseAttribute)
+		if (value == MaxValue || value < BaseAttribute)
 			return;
 		if (value < Attribute)
 		{
@@ -214,10 +215,6 @@ public interface ICharacter
 		}
 		else
 			MaxValue = value;
-	}
-	public void SetMaxValueInspector()
-	{
-		Debug.Log("SetMaxValueInspectorCalled: " + _newMaxValue);
 	}
 	private uint Modifier_SumValues(List<Modifier> modifierList)
 	{
@@ -240,17 +237,15 @@ public interface ICharacter
 			if (newModifier.Value > Attribute)
 				newModifier.Value = Attribute;
 			Malus.Add(newModifier);
-			if (newModifier.Value > 0)
-				RecalculateBonuses();
 		}
 		else
 		{
 			if (newModifier.Value > AttributePointsToMax)
 				newModifier.Value = AttributePointsToMax;
 			Bonus.Add(newModifier);
-			if (newModifier.Value > 0)
-				RecalculateMaluses();
 		}
+		if (newModifier.Value > 0)
+			RecalculateAttribute();
 	}
 	internal bool RemoveModifier(string name, ModifierType attributeType)
 	{

@@ -21,11 +21,31 @@ MonoBehaviour:
   _resonancePointsCurrent: 6
   _attack:
     _baseAttribute: 8
+    _maxValue: 9999
+    _bonusList: []
+    _malusList: []
+  _newAttackMaxValue: 9999
   _defence:
     _baseAttribute: 6
+    _maxValue: 9999
+    _bonusList: []
+    _malusList: []
+  _newDefenceMaxValue: 9999
   _shield:
-    _baseAttribute: 3
+    _baseAttribute: 4
+    _maxValue: 9999
+    _bonusList: []
+    _malusList: []
+  _newShieldMaxValue: 9999
   _hitChance:
-    _baseAttribute: 8
+    _baseAttribute: 75
+    _maxValue: 100
+    _bonusList: []
+    _malusList: []
+  _newHitChanceMaxValue: 100
   _evasion:
     _baseAttribute: 1
+    _maxValue: 100
+    _bonusList: []
+    _malusList: []
+  _newEvasionMaxValue: 100

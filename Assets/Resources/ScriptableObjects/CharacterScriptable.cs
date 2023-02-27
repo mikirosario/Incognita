@@ -15,17 +15,38 @@ public class CharacterScriptable : ScriptableObject
 	[SerializeField] uint _resonancePointsMax;
 	[SerializeField] uint _resonancePointsCurrent;
 	[Header("Attributes")]
-	[SerializeField] private CharacterAttribute _attack;
-	[SerializeField] private CharacterAttribute _defence;
-	[SerializeField] private CharacterAttribute _shield;
-	[SerializeField] private CharacterAttribute _hitChance;
-	[SerializeField] private CharacterAttribute _evasion;
+	[SerializeField] private CharacterAttribute _attack = new CharacterAttribute(null, null, 9999);
+	[ContextMenuItem("Set Attack Max Value", nameof(SetAttackMaxValue))] public uint _newAttackMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _defence = new CharacterAttribute(null, null, 9999);
+	[ContextMenuItem("Set Defence Max Value", nameof(SetDefenceMaxValue))] public uint _newDefenceMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _shield = new CharacterAttribute(null, null, 9999);
+	[ContextMenuItem("Set Shield Max Value", nameof(SetShieldMaxValue))] public uint _newShieldMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _hitChance = new CharacterAttribute(null, null, 100);
+	[ContextMenuItem("Set Hit Chance Max Value", nameof(SetHitChanceMaxValue))] public uint _newHitChanceMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _evasion = new CharacterAttribute(null, null, 100);
+	[ContextMenuItem("Set Evasion Max Value", nameof(SetEvasionMaxValue))] public uint _newEvasionMaxValue = uint.MaxValue;
 
-	public void SetMaxValueInspector()
+	public void SetAttackMaxValue()
 	{
-
+		Attack.SetMaxValue(_newAttackMaxValue);
+	}
+	public void SetDefenceMaxValue()
+	{
+		Defence.SetMaxValue(_newDefenceMaxValue);
+	}
+	public void SetShieldMaxValue()
+	{
+		Shield.SetMaxValue(_newShieldMaxValue);
+	}
+	public void SetHitChanceMaxValue()
+	{
+		HitChance.SetMaxValue(_newHitChanceMaxValue);
 	}
 
+	public void SetEvasionMaxValue()
+	{
+		Evasion.SetMaxValue(_newEvasionMaxValue);
+	}
 	public string Name { get { return _name; } internal set { _name = value; } }
 	public Color Color { get { return _color; } internal set { _color = value; } }
 	public uint Level { get { return _level; } internal set { _level = value; } }
@@ -41,26 +62,26 @@ public class CharacterScriptable : ScriptableObject
 
 	private void OnDisable()
 	{
-		Debug.Log("OnDisableCalled");
-		Attack.ClearModifiers();
-		Defence.ClearModifiers();
-		Shield.ClearModifiers();
-		HitChance.ClearModifiers();
-		Evasion.ClearModifiers();
+		//Debug.Log("OnDisableCalled");
+		//Attack.ClearModifiers();
+		//Defence.ClearModifiers();
+		//Shield.ClearModifiers();
+		//HitChance.ClearModifiers();
+		//Evasion.ClearModifiers();
 	}
 	private void OnEnable()
 	{
-		Debug.Log("OnEnableCalled");
-		Attack = null;
-		Defence = null;
-		Shield = null;
-		HitChance = null;
-		Evasion = null;
-		System.GC.Collect();
-		Attack = new CharacterAttribute(null, null, 10);
-		Defence = new CharacterAttribute();
-		Shield = new CharacterAttribute();
-		HitChance = new CharacterAttribute();
-		Evasion = new CharacterAttribute();
+		//Debug.Log("OnEnableCalled");
+		//Attack = null;
+		//Defence = null;
+		//Shield = null;
+		//HitChance = null;
+		//Evasion = null;
+		//System.GC.Collect();
+		//Attack = new CharacterAttribute(null, null, 9999);
+		//Defence = new CharacterAttribute(null, null, 9999);
+		//Shield = new CharacterAttribute(null, null, 9999);
+		//HitChance = new CharacterAttribute(null, null, 100);
+		//Evasion = new CharacterAttribute(null, null, 100);
 	}
 }
