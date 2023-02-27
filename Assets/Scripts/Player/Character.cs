@@ -88,7 +88,6 @@ public class Character : MonoBehaviour, ICharacter
 	{
 		item.ApplyEffect(target);
 	}
-
 	public void SetExplorationMode()
 	{
 		Animator.runtimeAnimatorController = AnimatorControllerExploration;
@@ -102,9 +101,9 @@ public class Character : MonoBehaviour, ICharacter
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Q))
-			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", uint.MaxValue), CharacterAttribute.ModifierType.Malus);
+			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
 		if (Input.GetKeyDown(KeyCode.E))
-			ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", uint.MaxValue), CharacterAttribute.ModifierType.Bonus);
+			ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
 	}
 }
 public interface ICharacter
@@ -143,6 +142,7 @@ public interface ICharacter
 	}
 	[SerializeField] private uint _baseAttribute;
 	[ReadOnly, SerializeField] private uint _maxValue = uint.MaxValue;
+	[ContextMenuItem("New Max Value", nameof(SetMaxValueInspector))] public uint _newMaxValue = uint.MaxValue;
 	[SerializeField] private List<Modifier> _bonusList;
 	[SerializeField] private List<Modifier> _malusList;
 	public uint Attribute { get { return BaseAttribute + BonusTotal - MalusTotal; } }
@@ -185,7 +185,7 @@ public interface ICharacter
 	{
 		Bonus = null;
 		Malus = null;
-		Debug.Log("Character Attribute Destructor Called");
+		//Debug.Log("Character Attribute Destructor Called");
 	}
 
 	public override string ToString()
@@ -198,6 +198,26 @@ public interface ICharacter
 	{
 		Bonus.Clear();
 		Malus.Clear();
+	}
+	public void SetMaxValue(uint value)
+	{
+		if (value < BaseAttribute)
+			return;
+		if (value < Attribute)
+		{
+			foreach (Modifier bonus in Bonus)
+				bonus.Value = 0;
+			foreach (Modifier malus in Malus)
+				malus.Value = 0;
+			MaxValue = value;
+			RecalculateAttribute();
+		}
+		else
+			MaxValue = value;
+	}
+	public void SetMaxValueInspector()
+	{
+		Debug.Log("SetMaxValueInspectorCalled: " + _newMaxValue);
 	}
 	private uint Modifier_SumValues(List<Modifier> modifierList)
 	{
