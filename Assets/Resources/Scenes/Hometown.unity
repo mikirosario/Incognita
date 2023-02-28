@@ -8814,7 +8814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _explorationObject: {fileID: 728076654}
   _UIControllerExplorationScene: {fileID: 1932813766}
-  _playerManager: {fileID: 1666438236}
+  _playerController: {fileID: 1666438236}
   _inputController: {fileID: 456809094}
 --- !u!1 &1087593833
 GameObject:

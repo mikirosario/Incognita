@@ -16,7 +16,7 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 	//[SerializeField] private PlayerInput _playerInput;
 	private StringBuilder _stringBuilder = new StringBuilder(20);
 	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
-	private PlayerManager PlayerManager => GameManager.Instance.ExplorationManager.PlayerManager;
+	private PlayerController PlayerController => GameManager.Instance.ExplorationManager.PlayerController;
 	private TextMeshProUGUI DisplayedAttackValue { get { return _displayedAttackValue; } }
 	private TextMeshProUGUI DisplayedDefenceValue { get { return _displayedDefenceValue; } }
 	private TextMeshProUGUI DisplayedShieldValue { get { return _displayedShieldValue; } }
@@ -39,13 +39,13 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 			return;
 		IsDisplayed = doDisplay;
 		GameManager.Instance.ExplorationManager.InputController.Common.PauseToggle.PauseGame(doDisplay);
-		DisplayedAttackValue.text = BuildValueString(PlayerManager.Kai.Attack.Attribute);
-		DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);
-		DisplayedShieldValue.text = BuildValueString(PlayerManager.Kai.Shield.Attribute);
-		DisplayedHitChanceValue.text = BuildValueString(PlayerManager.Kai.HitChance.Attribute);
-		DisplayedEvasionValue.text = BuildValueString(PlayerManager.Kai.Evasion.Attribute);
-		DisplayedHitPoints.text = BuildRangeString(PlayerManager.Kai.HitPointsCurrent, PlayerManager.Kai.HitPointsMax);
-		DisplayedResonancePoints.text = BuildRangeString(PlayerManager.Kai.ResonancePointsCurrent, PlayerManager.Kai.ResonancePointsMax);
+		DisplayedAttackValue.text = BuildValueString(PlayerController.Kai.Attack.Attribute);
+		DisplayedDefenceValue.text = BuildValueString(PlayerController.Kai.Defence.Attribute);
+		DisplayedShieldValue.text = BuildValueString(PlayerController.Kai.Shield.Attribute);
+		DisplayedHitChanceValue.text = BuildValueString(PlayerController.Kai.HitChance.Attribute);
+		DisplayedEvasionValue.text = BuildValueString(PlayerController.Kai.Evasion.Attribute);
+		DisplayedHitPoints.text = BuildRangeString(PlayerController.Kai.HitPointsCurrent, PlayerController.Kai.HitPointsMax);
+		DisplayedResonancePoints.text = BuildRangeString(PlayerController.Kai.ResonancePointsCurrent, PlayerController.Kai.ResonancePointsMax);
 		CharacterSheetPanel.SetActive(doDisplay);
 	}
 	private void OnCharacterSheetToggle(InputAction.CallbackContext context)
