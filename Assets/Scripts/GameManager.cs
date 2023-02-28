@@ -25,12 +25,8 @@ public class GameManager : MonoBehaviour
 	public SceneIndex ActiveScene { get; set; }
 	public BattleManager BattleManager { get; private set; }
 	public ExplorationManager ExplorationManager { get; private set; }
-
-
 	public UIManager UIManager { get; private set; }
 	public PlayerManager PlayerManager { get; private set; }
-	public InputManager InputManager { get; private set; }
-	public bool Paused { get { return InputManager.CommonInputs.PauseToggle.Paused; } }
 	private Scene GetLastLoadedScene()
 	{
 		return SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
@@ -42,6 +38,7 @@ public class GameManager : MonoBehaviour
 
 	}
 
+	//Set which LoadedScene is the active scene.
 	private void SetActiveScene(SceneIndex sceneIndex)
 	{
 		if (sceneIndex == SceneIndex.ExplorationScene)
@@ -78,24 +75,15 @@ public class GameManager : MonoBehaviour
 
 	private void RefreshExplorationManagerRef()
 	{
-		//GameObject[] rootGameObjects = LoadedScenes[(int)SceneIndex.ExplorationScene].GetRootGameObjects();
-		//foreach (GameObject rootGameObject in rootGameObjects)
-		//	if ((ExplorationManager = rootGameObject.GetComponent<ExplorationManager>()) != null)
-		//		break;
-		//rootGameObjects = null;
-		ExplorationManager = GameObject.Find("ExplorationManager").GetComponent<ExplorationManager>(); // LIO PODIA HACER ASIIIII XXXXXXXXXXXOOOO
+		ExplorationManager = GameObject.Find("ExplorationManager").GetComponent<ExplorationManager>();
 	}
 
 	private void Start()
 	{
 		//Get GameManagerScene Refs
-		InputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
 
-		//Get Battle Scene Refs
-		GameObject[] rootGameObjects = LoadedScenes[(int)SceneIndex.BattleScene].GetRootGameObjects();
-		foreach (GameObject rootGameObject in rootGameObjects)
-			if ((BattleManager = rootGameObject.GetComponent<BattleManager>()) != null)
-				break;
+		//Get Battle Scene Ref
+		BattleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
 		//Get Active Exploration Scene Ref for Initial Scene
 		RefreshExplorationManagerRef(); //Integrate into Async loading schema using coroutine - Miki
 		SetActiveScene(SceneIndex.ExplorationScene);

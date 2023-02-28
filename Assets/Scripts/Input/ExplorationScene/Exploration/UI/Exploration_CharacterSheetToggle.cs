@@ -28,7 +28,6 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 	public bool IsDisplayed { get; private set; }
 	private void Start()
 	{
-		PlayerInput = GameManager.Instance.InputManager.PlayerInput;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").started += OnCharacterSheetToggle;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").performed += OnCharacterSheetToggle;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").canceled += OnCharacterSheetToggle;
@@ -36,10 +35,10 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 
 	public void DisplayCharacterSheet(bool doDisplay)
 	{
-		if (doDisplay == true && GameManager.Instance.Paused == true) //Can't display menu while paused
+		if (doDisplay == true && GameManager.Instance.ExplorationManager.Paused == true) //Can't display menu while paused
 			return;
 		IsDisplayed = doDisplay;
-		GameManager.Instance.InputManager.CommonInputs.PauseToggle.PauseGame(doDisplay);
+		GameManager.Instance.ExplorationManager.InputController.InputCommon.PauseToggle.PauseGame(doDisplay);
 		//GameManager.Instance.InputManager.Common.PauseToggle.PauseGame(doDisplay); ACHIPAPI
 		DisplayedAttackValue.text = BuildValueString(PlayerManager.Kai.Attack.Attribute);
 		DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);

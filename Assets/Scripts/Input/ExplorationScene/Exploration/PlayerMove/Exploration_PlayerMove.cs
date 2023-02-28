@@ -20,7 +20,6 @@ public class Exploration_PlayerMove : MonoBehaviour
 
 	private void Start()
 	{
-		PlayerInput = GameManager.Instance.InputManager.PlayerInput;
 		AnimatorVar_IsWalking = Animator.StringToHash("isWalking");
 		AnimatorVar_X = Animator.StringToHash("X");
 		AnimatorVar_Y = Animator.StringToHash("Y");
@@ -44,8 +43,7 @@ public class Exploration_PlayerMove : MonoBehaviour
 	private void OnPlayerMove(InputAction.CallbackContext context)
 	{
 		Movement = context.ReadValue<Vector2>();
-		//input.Get<Vector2>();
-		if (GameManager.Instance.Paused == false)
+		if (GameManager.Instance.ExplorationManager.Paused == false)
 			UpdatePlayerInputs();
 	}
 
