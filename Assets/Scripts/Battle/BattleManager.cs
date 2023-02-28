@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 //using Area = IBattleAreaController.Area;
 
 public class BattleManager : MonoBehaviour
@@ -11,7 +12,6 @@ public class BattleManager : MonoBehaviour
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
 	//[SerializeField] private InputControllerBattleScene _inputController;
 	private Character[] _playerParty = new Character[3];
-
 	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
 	private GameObject BattleUIObject { get { return _battleUIObject; } set { _battleUIObject = value; } }
 	private EnemySpawn[] EnemySpawnPrefabs { get; set; }
@@ -19,36 +19,50 @@ public class BattleManager : MonoBehaviour
 	public Character[] PlayerParty { get { return _playerParty; } }
 	public GameObject[] EnemyParty { get; private set; }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
+	public StringBuilder CurrentBattleArea { get; private set; }
 	//public InputControllerBattleScene InputController { get { return _inputController; } private set { _inputController = value; } }
 
 
-	private void Start()
+	private void Awake()
 	{
-		//BattleAreasObject.SetActive(true);
-		//BattleUIObject.SetActive(true);
+		CurrentBattleArea = new StringBuilder("Town", 20);
+
+		//To test Battle Area, deactivate GameManager, unload ExplorationScene and use these methods to initiate battle
+		//SetActiveBattleScene(true);
 		//LoadBattle();
 	}
 
-	public void SetActiveBattleScene(bool isActive)
+	public void SetActiveBattleScene(bool doSet)
 	{
-		BattleAreasObject.SetActive(isActive);
-		BattleUIObject.SetActive(isActive);
+		if (doSet == false)
+			UnloadArea(CurrentBattleArea.ToString());
+		BattleAreasObject.SetActive(doSet);
+		BattleUIObject.SetActive(doSet);
 	}
 
-//	private void LoadArea(IBattleAreaController)
+	private void LoadArea(string areaName)
+	{
+		UnloadArea(CurrentBattleArea.ToString());
+		CurrentBattleArea.Clear();
+		CurrentBattleArea.Append(areaName);
+		BattleAreaSelector.GetBattleAreaGameObject(areaName).SetActive(true);
+	}
+
+	private void UnloadArea(string areaName)
+	{
+		BattleAreaSelector.GetBattleAreaGameObject(areaName).SetActive(false);
+	}
 
 	public void LoadBattle(string areaName = null)
 	{
 		if (areaName == null)
-			areaName = GameManager.CurrentBattleArea;
-		BattleAreaSelector.GetBattleAreaGameObject(areaName).SetActive(true);
+			areaName = CurrentBattleArea.ToString();
+		LoadArea(areaName);
 		IBattleAreaController battleAreaController = BattleAreaSelector.GetBattleAreaController(areaName);		
 		if (battleAreaController == null || !GetEnemySpawnPrefabs(battleAreaController))
 			return; //return to previous scene with error log
 		Spawn(EnemySpawnPrefabs);
 	}
-
-
 
 	private bool GetEnemySpawnPrefabs(IBattleAreaController area)
 	{
