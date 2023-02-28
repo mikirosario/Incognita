@@ -5,30 +5,50 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+	[SerializeField] private GameObject _battleAreasObject;
+	[SerializeField] private GameObject _battleUIObject;
 	[SerializeField] private GameObject[] _playerPartyPrefabs;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
+	[SerializeField] private InputController _inputController;
 	private Character[] _playerParty = new Character[3];
-	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
+
+	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
+	private GameObject BattleUIObject { get { return _battleUIObject; } set { _battleUIObject = value; } }
 	private EnemySpawn[] EnemySpawnPrefabs { get; set; }
 	private GameObject[] PlayerPartyPrefabs { get; set; }
 	public Character[] PlayerParty { get { return _playerParty; } }
 	public GameObject[] EnemyParty { get; private set; }
+	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
+	public InputController InputController { get { return _inputController; } private set { _inputController = value; } }
 
 
 	private void Start()
 	{
-		LoadBattle();
+		//BattleAreasObject.SetActive(true);
+		//BattleUIObject.SetActive(true);
+		//LoadBattle();
 	}
+
+	public void SetActiveBattleScene(bool isActive)
+	{
+		BattleAreasObject.SetActive(isActive);
+		BattleUIObject.SetActive(isActive);
+	}
+
+//	private void LoadArea(IBattleAreaController)
 
 	public void LoadBattle(string areaName = null)
 	{
 		if (areaName == null)
 			areaName = GameManager.CurrentBattleArea;
-		IBattleAreaController battleAreaController = BattleAreaSelector.Get(areaName);
+		BattleAreaSelector.GetBattleAreaGameObject(areaName).SetActive(true);
+		IBattleAreaController battleAreaController = BattleAreaSelector.GetBattleAreaController(areaName);		
 		if (battleAreaController == null || !GetEnemySpawnPrefabs(battleAreaController))
 			return; //return to previous scene with error log
 		Spawn(EnemySpawnPrefabs);
 	}
+
+
 
 	private bool GetEnemySpawnPrefabs(IBattleAreaController area)
 	{

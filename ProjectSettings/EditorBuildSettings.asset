@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Resources/Scenes/GameManager.unity
+    guid: c6b8eba45f2c92047966f4cb7fceb95e
+  - enabled: 1
+    path: Assets/Resources/Scenes/Hometown.unity
+    guid: 2122e24743248c34380e35a22c2b7c46
+  - enabled: 1
+    path: Assets/Resources/Scenes/BattleScene.unity
+    guid: a1b0b02c629436c4dab34c25d8944fe3
   m_configObjects: {}

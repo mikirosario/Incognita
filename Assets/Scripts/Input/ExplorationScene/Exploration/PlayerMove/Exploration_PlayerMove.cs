@@ -9,7 +9,7 @@ public class Exploration_PlayerMove : MonoBehaviour
 	[SerializeField] private Rigidbody2D _rb;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private float _speed = 5f;
-	private PlayerInput PlayerInput { get { return _playerInput; } }
+	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
 	private Rigidbody2D RigidBody { get { return _rb; } }
 	private Animator Animator { get { return _animator; } }
 	private float Speed { get { return _speed; } }
@@ -18,8 +18,9 @@ public class Exploration_PlayerMove : MonoBehaviour
 	private int AnimatorVar_X { get; set; }
 	private int AnimatorVar_Y { get; set; }
 
-	private void Awake()
+	private void Start()
 	{
+		PlayerInput = GameManager.Instance.InputManager.PlayerInput;
 		AnimatorVar_IsWalking = Animator.StringToHash("isWalking");
 		AnimatorVar_X = Animator.StringToHash("X");
 		AnimatorVar_Y = Animator.StringToHash("Y");

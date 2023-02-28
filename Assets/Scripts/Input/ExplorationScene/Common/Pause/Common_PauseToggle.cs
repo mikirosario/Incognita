@@ -9,7 +9,7 @@ public class Common_PauseToggle : MonoBehaviour
 	private PlayerInput PlayerInput { get { return _playerInput; } }
 	private float UnpausedTimeScale { get; set; }
 	public bool Paused { get; private set; }
-	private InputManager InputManager => GameManager.Instance.InputManager;
+	//private InputManager InputManager => GameManager.Instance.InputManager;
 
 	private void Awake()
 	{
@@ -27,7 +27,9 @@ public class Common_PauseToggle : MonoBehaviour
 		if (Paused == false)
 		{
 			Time.timeScale = UnpausedTimeScale;
-			InputManager.Exploration.PlayerMove.UpdatePlayerInputs();
+			if (GameManager.Instance.ActiveScene == GameManager.SceneIndex.ExplorationScene)
+				GameManager.Instance.ExplorationManager.InputController.InputExploration.PlayerMove.UpdatePlayerInputs();
+				//InputManager.Exploration.PlayerMove.UpdatePlayerInputs(); ACHIPAPI
 		}
 		else
 		{

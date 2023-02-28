@@ -7,14 +7,15 @@ using TMPro;
 
 public class Exploration_CharacterSheetToggle : MonoBehaviour
 {
+	[SerializeField] private PlayerInput _playerInput;
 	[SerializeField] private GameObject _characterSheetPanel;
 	[SerializeField] private TextMeshProUGUI	_displayedAttackValue, _displayedDefenceValue,
 												_displayedShieldValue, _displayedHitChanceValue,
 												_displayedEvasionValue, _displayedHitPoints,
 												_displayedResonancePoints;
-	[SerializeField] private PlayerInput _playerInput;
+	//[SerializeField] private PlayerInput _playerInput;
 	private StringBuilder _stringBuilder = new StringBuilder(20);
-	private PlayerInput PlayerInput { get { return _playerInput; } }
+	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
 	private PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
 	private TextMeshProUGUI DisplayedAttackValue { get { return _displayedAttackValue; } }
 	private TextMeshProUGUI DisplayedDefenceValue { get { return _displayedDefenceValue; } }
@@ -25,8 +26,9 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 	private TextMeshProUGUI DisplayedResonancePoints { get { return _displayedResonancePoints; } }
 	public GameObject CharacterSheetPanel { get { return _characterSheetPanel; } }
 	public bool IsDisplayed { get; private set; }
-	private void Awake()
+	private void Start()
 	{
+		PlayerInput = GameManager.Instance.InputManager.PlayerInput;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").started += OnCharacterSheetToggle;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").performed += OnCharacterSheetToggle;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").canceled += OnCharacterSheetToggle;
@@ -37,7 +39,8 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 		if (doDisplay == true && GameManager.Instance.Paused == true) //Can't display menu while paused
 			return;
 		IsDisplayed = doDisplay;
-		GameManager.Instance.InputManager.Common.PauseToggle.PauseGame(doDisplay);
+		GameManager.Instance.InputManager.CommonInputs.PauseToggle.PauseGame(doDisplay);
+		//GameManager.Instance.InputManager.Common.PauseToggle.PauseGame(doDisplay); ACHIPAPI
 		DisplayedAttackValue.text = BuildValueString(PlayerManager.Kai.Attack.Attribute);
 		DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);
 		DisplayedShieldValue.text = BuildValueString(PlayerManager.Kai.Shield.Attribute);
