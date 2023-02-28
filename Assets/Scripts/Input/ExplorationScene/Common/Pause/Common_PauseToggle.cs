@@ -28,7 +28,7 @@ public class Common_PauseToggle : MonoBehaviour
 		{
 			Time.timeScale = UnpausedTimeScale;
 			if (GameManager.Instance.ActiveScene == GameManager.SceneIndex.ExplorationScene)
-				GameManager.Instance.ExplorationManager.InputController.InputExploration.PlayerMove.UpdatePlayerInputs();
+				GameManager.Instance.ExplorationManager.InputController.Exploration.PlayerMove.UpdatePlayerInputs();
 				//InputManager.Exploration.PlayerMove.UpdatePlayerInputs(); ACHIPAPI
 		}
 		else

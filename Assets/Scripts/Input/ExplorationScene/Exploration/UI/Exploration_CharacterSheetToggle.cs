@@ -38,8 +38,7 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 		if (doDisplay == true && GameManager.Instance.ExplorationManager.Paused == true) //Can't display menu while paused
 			return;
 		IsDisplayed = doDisplay;
-		GameManager.Instance.ExplorationManager.InputController.InputCommon.PauseToggle.PauseGame(doDisplay);
-		//GameManager.Instance.InputManager.Common.PauseToggle.PauseGame(doDisplay); ACHIPAPI
+		GameManager.Instance.ExplorationManager.InputController.Common.PauseToggle.PauseGame(doDisplay);
 		DisplayedAttackValue.text = BuildValueString(PlayerManager.Kai.Attack.Attribute);
 		DisplayedDefenceValue.text = BuildValueString(PlayerManager.Kai.Defence.Attribute);
 		DisplayedShieldValue.text = BuildValueString(PlayerManager.Kai.Shield.Attribute);

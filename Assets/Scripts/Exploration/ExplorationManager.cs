@@ -12,7 +12,7 @@ public class ExplorationManager : MonoBehaviour
 	public UIManager UIManager { get { return _UIManager; } private set { _UIManager = value; } }
 	public PlayerManager PlayerManager { get { return _playerManager; } private set { _playerManager = value; } }
 	public InputController InputController { get { return _inputController; } private set { _inputController = value; } }
-	public bool Paused { get { return InputController.InputCommon.PauseToggle.Paused; } }
+	public bool Paused { get { return InputController.Common.PauseToggle.Paused; } }
 
 	private void Awake()
 	{
