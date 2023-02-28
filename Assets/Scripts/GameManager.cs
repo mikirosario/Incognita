@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour
 	public SceneIndex ActiveScene { get; set; }
 	public BattleManager BattleManager { get; private set; }
 	public ExplorationManager ExplorationManager { get; private set; }
-	public UIManager UIManager { get; private set; }
-	public PlayerManager PlayerManager { get; private set; }
 	private Scene GetLastLoadedScene()
 	{
 		return SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
@@ -34,8 +32,6 @@ public class GameManager : MonoBehaviour
 	private void RegisterScene(Scene scene, SceneIndex sceneIndex)
 	{
 		LoadedScenes[(int)sceneIndex] = scene;
-		//LoadedScenes.Add(GetLastLoadedScene().name, GetLastLoadedScene());
-
 	}
 
 	//Set which LoadedScene is the active scene.
@@ -87,13 +83,6 @@ public class GameManager : MonoBehaviour
 		//Get Active Exploration Scene Ref for Initial Scene
 		RefreshExplorationManagerRef(); //Integrate into Async loading schema using coroutine - Miki
 		SetActiveScene(SceneIndex.ExplorationScene);
-		//Get Active Exploration Scene Refs
-		//ActiveScene.
-		UIManager = GameObject.Find("UI").GetComponent<UIManager>();
-		PlayerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
-
-		Debug.Log(UIManager);
-		Debug.Log(PlayerManager);
 	}
 
 

@@ -16,7 +16,7 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 	//[SerializeField] private PlayerInput _playerInput;
 	private StringBuilder _stringBuilder = new StringBuilder(20);
 	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
-	private PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
+	private PlayerManager PlayerManager => GameManager.Instance.ExplorationManager.PlayerManager;
 	private TextMeshProUGUI DisplayedAttackValue { get { return _displayedAttackValue; } }
 	private TextMeshProUGUI DisplayedDefenceValue { get { return _displayedDefenceValue; } }
 	private TextMeshProUGUI DisplayedShieldValue { get { return _displayedShieldValue; } }

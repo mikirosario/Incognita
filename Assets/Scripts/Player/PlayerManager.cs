@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 public class PlayerManager : MonoBehaviour
 {
 	[SerializeField] private Character _kai;
-	[SerializeField] private PlayerInput _explorationInputController;
-	public PlayerInput ExplorationInputController { get { return _explorationInputController; } }
 
 	public Character Kai { get { return _kai; } }
 

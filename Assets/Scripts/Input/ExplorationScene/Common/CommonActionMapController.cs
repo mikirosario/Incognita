@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputCommon : MonoBehaviour
+public class CommonActionMapController : MonoBehaviour
 {
 	[SerializeField] private Common_PauseToggle _common_PauseToggle;
 

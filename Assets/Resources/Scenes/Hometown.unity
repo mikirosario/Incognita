@@ -6901,8 +6901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f75f0b049006b642b7fbd44ba9a6346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputExploration: {fileID: 835148702}
-  _inputCommon: {fileID: 1268780908}
+  _explorationActionMapController: {fileID: 835148702}
+  _commonActionMapController: {fileID: 1268780908}
   _playerInput: {fileID: 456809095}
 --- !u!114 &456809095
 MonoBehaviour:
@@ -8813,7 +8813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explorationObject: {fileID: 728076654}
-  _UIManager: {fileID: 1932813766}
+  _UIControllerExplorationScene: {fileID: 1932813766}
   _playerManager: {fileID: 1666438236}
   _inputController: {fileID: 456809094}
 --- !u!1 &1087593833
@@ -10036,7 +10036,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _kai: {fileID: 1877892531}
-  _explorationInputController: {fileID: 0}
 --- !u!1 &1691356033
 GameObject:
   m_ObjectHideFlags: 0

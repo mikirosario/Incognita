@@ -39,7 +39,7 @@ public class Common_PauseToggle : MonoBehaviour
 	}
 	private void OnPauseToggle(InputAction.CallbackContext context)
 	{
-		if (GameManager.Instance.ExplorationManager.UIManager.IsMenuOpen == false) //Can't unpause while menu is displayed
+		if (GameManager.Instance.ExplorationManager.UIController.IsMenuOpen == false) //Can't unpause while menu is displayed
 			PauseGame(!Paused);
 	}
 

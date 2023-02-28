@@ -9,7 +9,7 @@ public class BattleManager : MonoBehaviour
 	[SerializeField] private GameObject _battleUIObject;
 	[SerializeField] private GameObject[] _playerPartyPrefabs;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
-	[SerializeField] private InputController _inputController;
+	[SerializeField] private InputControllerExplorationScene _inputController;
 	private Character[] _playerParty = new Character[3];
 
 	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviour
 	public Character[] PlayerParty { get { return _playerParty; } }
 	public GameObject[] EnemyParty { get; private set; }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
-	public InputController InputController { get { return _inputController; } private set { _inputController = value; } }
+	public InputControllerExplorationScene InputController { get { return _inputController; } private set { _inputController = value; } }
 
 
 	private void Start()

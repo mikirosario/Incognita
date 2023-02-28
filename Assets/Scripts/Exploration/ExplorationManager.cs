@@ -5,19 +5,19 @@ using UnityEngine;
 public class ExplorationManager : MonoBehaviour
 {
 	[SerializeField] private GameObject _explorationObject;
-	[SerializeField] private UIManager _UIManager;
+	[SerializeField] private UIControllerExplorationScene _UIControllerExplorationScene;
 	[SerializeField] private PlayerManager _playerManager;
-	[SerializeField] private InputController _inputController;
+	[SerializeField] private InputControllerExplorationScene _inputController;
 	private GameObject ExplorationObject { get { return _explorationObject; } set { _explorationObject = value; } }
-	public UIManager UIManager { get { return _UIManager; } private set { _UIManager = value; } }
+	public UIControllerExplorationScene UIController { get { return _UIControllerExplorationScene; } private set { _UIControllerExplorationScene = value; } }
 	public PlayerManager PlayerManager { get { return _playerManager; } private set { _playerManager = value; } }
-	public InputController InputController { get { return _inputController; } private set { _inputController = value; } }
+	public InputControllerExplorationScene InputController { get { return _inputController; } private set { _inputController = value; } }
 	public bool Paused { get { return InputController.Common.PauseToggle.Paused; } }
 
 	private void Awake()
 	{
 
-		Debug.Log(UIManager);
+		Debug.Log(UIController);
 		Debug.Log(PlayerManager);
 	}
 

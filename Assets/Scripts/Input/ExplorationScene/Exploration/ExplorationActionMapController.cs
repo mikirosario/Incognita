@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputExploration : MonoBehaviour
+public class ExplorationActionMapController : MonoBehaviour
 {
 	[SerializeField] private Exploration_PlayerMove _playerMove;
 	[SerializeField] private Exploration_CharacterSheetToggle _characterSheetToggle;
