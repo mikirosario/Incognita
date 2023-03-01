@@ -27,9 +27,12 @@ public class BattleManager : MonoBehaviour
 	{
 		CurrentBattleArea = new StringBuilder("Town", 20);
 
-		//To test Battle Area, deactivate GameManager, unload ExplorationScene and use these methods to initiate battle
-		//SetActiveBattleScene(true);
-		//LoadBattle();
+		//To test Battle Area, use these methods to initiate battle
+		if (GameManager.Instance.SetActiveBattleScene)
+		{
+			SetActiveBattleScene(true);
+			LoadBattle();
+		}
 	}
 
 	public void SetActiveBattleScene(bool doSet)

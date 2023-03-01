@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ExplorationUI_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: a0897df2d428d6848b76920e3b15fa9d, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3040746463232
+    m_Localized: HOJA DE PERSONAJE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189001790971904
+    m_Localized: ATAQUE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189135643795456
+    m_Localized: DEFENSA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189192321425408
+    m_Localized: ESCUDO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189262211112960
+    m_Localized: "PUNTER\xEDA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189397435473920
+    m_Localized: "EVASI\xF3N"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 192329757286400
+    m_Localized: SALUD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 192406966034432
+    m_Localized: RESONANCIA
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

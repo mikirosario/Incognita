@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ExplorationUI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: ExplorationUI
+  m_TableCollectionNameGuidString: a0897df2d428d6848b76920e3b15fa9d
+  m_Entries:
+  - m_Id: 3040746463232
+    m_Key: Title_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189001790971904
+    m_Key: Attack_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189135643795456
+    m_Key: Defence_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189192321425408
+    m_Key: Shield_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189262211112960
+    m_Key: HitChance_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 189397435473920
+    m_Key: Evasion_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 192329757286400
+    m_Key: HitPoints_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 192406966034432
+    m_Key: Resonance_CharacterSheet
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5699525262776991768
+  references:
+    version: 2
+    RefIds:
+    - rid: 5699525262776991768
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1677665613650

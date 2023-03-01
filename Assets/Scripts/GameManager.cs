@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
 		EndingScene = 5
 	}
 	[SerializeField] string _initialScene = "Hometown";
-	[SerializeField] bool _setActiveBattleScene = false;
+	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] bool _setActiveBattleScene = false;
 	public static GameManager Instance { get; private set; }
 	private string InitialScene { get { return _initialScene; } }
-	private bool SetActiveBattleScene { get { return _setActiveBattleScene; } }
+	public bool SetActiveBattleScene { get { return _setActiveBattleScene; } }
 	private Scene[] LoadedScenes = new Scene[6];
 	public SceneIndex ActiveScene { get; set; }
 	public BattleManager BattleManager { get; private set; }
@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
 	IEnumerator LoadGameAsync() //load progress bar stuff will be referenced here
 	{
 		EditorLoad(); //<--replace with LoadGame() for production builds
+		//LoadGame();
 		BitArray loadConfirmation = new BitArray(3);
 		bool isFullyLoaded = false;
 		while (isFullyLoaded == false)
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour
 		BattleManager = GameObject.Find("BattleManager").GetComponent<BattleManager>();
 		//Get Active Exploration Scene Ref for Initial Scene
 		RefreshExplorationManagerRef();
-		SetActiveScene(SetActiveBattleScene == true ? SceneIndex.BattleScene : SceneIndex.ExplorationScene);
+		SetActiveScene(SetActiveBattleScene == true ? SceneIndex.BattleScene : SceneIndex.ExplorationScene); //<--Editor check
 		//SetActiveScene(SceneIndex.ExplorationScene);
 	}
 
