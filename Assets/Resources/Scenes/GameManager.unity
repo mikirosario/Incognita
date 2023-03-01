@@ -459,6 +459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea03dd1794514cf4db8c7c906ec39d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _initialScene: Hometown
+  _setActiveBattleScene: 0
 --- !u!4 &2050895692
 Transform:
   m_ObjectHideFlags: 0
