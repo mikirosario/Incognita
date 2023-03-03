@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class Exploration_CharacterSheetToggle : MonoBehaviour
+public class Exploration_CharacterSheetToggle : MonoBehaviour, IMenuToggle
 {
 	[SerializeField] private PlayerInput _playerInput;
 	[SerializeField] private GameObject _characterSheetPanel;
@@ -25,20 +25,26 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 	private TextMeshProUGUI DisplayedHitPoints { get { return _displayedHitPoints; } }
 	private TextMeshProUGUI DisplayedResonancePoints { get { return _displayedResonancePoints; } }
 	public GameObject CharacterSheetPanel { get { return _characterSheetPanel; } }
+	public GameObject GameObject { get { return CharacterSheetPanel; } }
 	public bool IsDisplayed { get; private set; }
 	private void Start()
 	{
-		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").started += OnCharacterSheetToggle;
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").performed += OnCharacterSheetToggle;
-		PlayerInput.actions.FindActionMap("Exploration").FindAction("CharacterSheetToggle").canceled += OnCharacterSheetToggle;
 	}
 
-	public void DisplayCharacterSheet(bool doDisplay)
+	public void Display(bool doDisplay)
 	{
-		if (doDisplay == true && GameManager.Instance.ExplorationManager.Paused == true) //Can't display menu while paused
-			return;
+		//if (doDisplay == true && GameManager.Instance.ExplorationManager.Paused == true) //Can't display menu while paused
+		//	return;
 		IsDisplayed = doDisplay;
-		GameManager.Instance.ExplorationManager.InputController.Common.PauseToggle.PauseGame(doDisplay);
+		//GameManager.Instance.ExplorationManager.InputController.Common.PauseToggle.PauseGame(doDisplay);
+		if (doDisplay == true)
+			RefreshStats();
+		CharacterSheetPanel.SetActive(doDisplay);
+	}
+
+	private void RefreshStats()
+	{
 		DisplayedAttackValue.text = BuildValueString(PlayerController.Kai.Attack.Attribute);
 		DisplayedDefenceValue.text = BuildValueString(PlayerController.Kai.Defence.Attribute);
 		DisplayedShieldValue.text = BuildValueString(PlayerController.Kai.Shield.Attribute);
@@ -46,11 +52,12 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour
 		DisplayedEvasionValue.text = BuildValueString(PlayerController.Kai.Evasion.Attribute);
 		DisplayedHitPoints.text = BuildRangeString(PlayerController.Kai.HitPointsCurrent, PlayerController.Kai.HitPointsMax);
 		DisplayedResonancePoints.text = BuildRangeString(PlayerController.Kai.ResonancePointsCurrent, PlayerController.Kai.ResonancePointsMax);
-		CharacterSheetPanel.SetActive(doDisplay);
 	}
+
 	private void OnCharacterSheetToggle(InputAction.CallbackContext context)
 	{
-		DisplayCharacterSheet(!CharacterSheetPanel.activeSelf);
+		//Display(!CharacterSheetPanel.activeSelf);
+		GameManager.Instance.ExplorationManager.UIController.ToggleMenu(this);
 	}
 	private string BuildValueString(uint value)
 	{

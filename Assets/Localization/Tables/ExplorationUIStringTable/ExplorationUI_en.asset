@@ -50,6 +50,10 @@ MonoBehaviour:
     m_Localized: RESONANCE
     m_Metadata:
       m_Items: []
+  - m_Id: 494388066967552
+    m_Localized: SETTINGS
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
