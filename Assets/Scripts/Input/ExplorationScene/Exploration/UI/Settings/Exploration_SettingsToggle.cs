@@ -18,6 +18,19 @@ public class Exploration_SettingsToggle : MonoBehaviour, IMenuToggle
 	private void Awake()
 	{
 		PlayerInput.actions.FindActionMap("Exploration").FindAction("SettingsToggle").performed += OnSettingsToggle;
+		List<IMenuToggle> menuList = new List<IMenuToggle>();
+		IMenuToggle component;
+		for (int i = 0; i < transform.childCount; ++i)
+			if ((component = transform.GetChild(i).GetComponent<IMenuToggle>()) != null)
+				menuList.Add(component);
+		if (menuList.Count > 0)
+			for (int pos = 0, mod = menuList.Count; pos < menuList.Count; ++pos)
+			{
+				menuList[pos].Next = menuList[(pos + 1) % mod];
+				menuList[pos].Prev = menuList[(pos + menuList.Count - 1) % mod];
+			}
+		menuList.Clear();
+		menuList = null;
 	}
 
 	public void Display(bool doDisplay)
@@ -29,4 +42,6 @@ public class Exploration_SettingsToggle : MonoBehaviour, IMenuToggle
 	{
 		GameManager.Instance.ExplorationManager.UIController.ToggleMenu(this);
 	}
+
+
 }

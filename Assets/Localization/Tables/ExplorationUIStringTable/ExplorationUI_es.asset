@@ -54,6 +54,18 @@ MonoBehaviour:
     m_Localized: "CONFIGURACI\xF3N"
     m_Metadata:
       m_Items: []
+  - m_Id: 1559617139957760
+    m_Localized: IDIOMA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1560010020413440
+    m_Localized: "INGL\xE9S"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1560141251796992
+    m_Localized: "ESPA\xF1OL"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

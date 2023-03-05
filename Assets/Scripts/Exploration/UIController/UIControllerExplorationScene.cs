@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class UIControllerExplorationScene : MonoBehaviour
 {
-	[SerializeField] private GameObject _characterSheetToggle;
-	[SerializeField] private GameObject _settingsToggle;
+	//[SerializeField] private GameObject _characterSheetToggle;
+	//[SerializeField] private GameObject _settingsToggle;
+	[SerializeField] private UISettingsSubmenuControllerExplorationScene _settingsSubmenuController;
 	[SerializeField] private GameObject _menuSelectorsToggle;
 	private IMenuToggle _activeMenu = null;
 	public bool IsMenuOpen { get { return GameManager.Instance.ExplorationManager.InputController.Exploration.UIActive; } }
-	public GameObject CharacterSheetToggle { get { return _characterSheetToggle; } }
-	public GameObject SettingsToggle { get { return _settingsToggle; } }
+	//public GameObject CharacterSheetToggle { get { return _characterSheetToggle; } }
+	//public GameObject SettingsToggle { get { return _settingsToggle; } }
 	public GameObject MenuSelectorsToggle { get { return _menuSelectorsToggle; } }
+	public UISettingsSubmenuControllerExplorationScene SettingsController { get { return _settingsSubmenuController; } }
 	private IMenuToggle ActiveMenu { get { return _activeMenu; } set { _activeMenu = value; } }
 
 	public void OpenNextMenu()

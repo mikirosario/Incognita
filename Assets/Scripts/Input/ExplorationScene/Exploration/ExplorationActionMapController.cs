@@ -15,16 +15,19 @@ public class ExplorationActionMapController : MonoBehaviour
 
 	private void Awake()
 	{
-		IMenuToggle[] menuArray = GetComponentsInChildren<IMenuToggle>();
-		if (menuArray.Length > 0)
-			for(int pos = 0, mod = menuArray.Length; pos < menuArray.Length; ++pos)
+		List<IMenuToggle> menuList = new List<IMenuToggle>();
+		IMenuToggle component;
+		for (int i = 0; i < transform.childCount; ++i)
+			if ((component = transform.GetChild(i).GetComponent<IMenuToggle>()) != null)
+				menuList.Add(component);
+		component = null;
+		if (menuList.Count > 0)
+			for(int pos = 0, mod = menuList.Count; pos < menuList.Count; ++pos)
 			{
-				menuArray[pos].Next = menuArray[(pos + 1) % mod];
-				menuArray[pos].Prev = menuArray[(pos + menuArray.Length - 1) % mod];
+				menuList[pos].Next = menuList[(pos + 1) % mod];
+				menuList[pos].Prev = menuList[(pos + menuList.Count - 1) % mod];
 			}
-		//Debug.Log(CharacterSheetToggle.Next);
-		//Debug.Log(CharacterSheetToggle.Prev);
-		//Debug.Log(SettingsToggle.Next);
-		//Debug.Log(SettingsToggle.Prev);
+		menuList.Clear();
+		menuList = null;
 	}
 }
