@@ -11,6 +11,8 @@ public class Exploration_SettingsToggle : MonoBehaviour, IMenuToggle
 	private GameObject SettingsPanel { get { return _settingsPanel; } set { _settingsPanel = value; } }
 	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
 	public GameObject GameObject { get { return SettingsPanel; } }
+	public IMenuToggle Next { get; set; }
+	public IMenuToggle Prev { get; set; }
 	public bool IsDisplayed { get; private set; }
 
 	private void Awake()

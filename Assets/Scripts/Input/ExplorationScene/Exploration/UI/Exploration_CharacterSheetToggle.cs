@@ -26,6 +26,8 @@ public class Exploration_CharacterSheetToggle : MonoBehaviour, IMenuToggle
 	private TextMeshProUGUI DisplayedResonancePoints { get { return _displayedResonancePoints; } }
 	public GameObject CharacterSheetPanel { get { return _characterSheetPanel; } }
 	public GameObject GameObject { get { return CharacterSheetPanel; } }
+	public IMenuToggle Next { get; set; }
+	public IMenuToggle Prev { get; set; }
 	public bool IsDisplayed { get; private set; }
 	private void Start()
 	{

@@ -91,6 +91,10 @@ public class GameManager : MonoBehaviour
             return;
 		}
         Instance = this;
+	}
+
+	private void Start()
+	{
 		StartCoroutine(LoadGameAsync());
 	}
 
