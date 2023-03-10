@@ -17,18 +17,23 @@ public class GameManager : MonoBehaviour
 		EndingScene = 5
 	}
 	[SerializeField] string _initialScene = "Hometown";
-	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] bool _setActiveBattleScene = false;
+	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] bool _setActiveBattleScene = false; //<-Debug code
+	[SerializeField] List<GameObject> _playableCharacterPrefabs;
+	private StringBuilder _defaultBattleArea = new StringBuilder(20);
+	private List<GameObject> PlayableCharacterPrefabs { get { return _playableCharacterPrefabs; } }
 	public static GameManager Instance { get; private set; }
+	private SaveData SaveData { get; set; }
 	private string InitialScene { get { return _initialScene; } }
-	public bool SetActiveBattleScene { get { return _setActiveBattleScene; } }
+	public bool SetActiveBattleScene { get { return _setActiveBattleScene; } } //<-Debug code
 	private Scene[] LoadedScenes = new Scene[6];
 	public SceneIndex ActiveScene { get; set; }
 	public BattleManager BattleManager { get; private set; }
 	public ExplorationManager ExplorationManager { get; private set; }
+	public List<GameObject> PlayerPartyPrefabs { get; private set; }
 
-		//This is just for use by EditorLoad testing method.
-		//Remove from production.
-		private bool SceneContains<T>(Scene scene) //DEBUG CODE
+	//This is just for use by EditorLoad testing method.
+	//Remove from production.
+	private bool SceneContains<T>(Scene scene) //DEBUG CODE
 		{
 			GameObject[] sceneGameObjects = scene.GetRootGameObjects();
 			foreach (GameObject gameObject in sceneGameObjects)
@@ -91,6 +96,11 @@ public class GameManager : MonoBehaviour
             return;
 		}
         Instance = this;
+		PlayerPartyPrefabs = new List<GameObject>();
+		//if save file, deserialize into SaveData, load data, SaveData = null.
+		//else...		;
+		PlayerPartyPrefabs.Add(PlayableCharacterPrefabs.Find(obj => obj.name.Equals("Kai")));
+		//Debug.Log(PlayerPartyPrefabs[0].name);
 	}
 
 	private void Start()
@@ -139,7 +149,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	//Set which LoadedScene is the active scene.
-	private void SetActiveScene(SceneIndex sceneIndex)
+	public void SetActiveScene(SceneIndex sceneIndex, string battleAreaName = null)
 	{
 		if (sceneIndex == SceneIndex.ExplorationScene)
 		{
@@ -150,14 +160,16 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			ExplorationManager.SetActiveExplorationScene(false);
-			BattleManager.SetActiveBattleScene(true);
+			BattleManager.SetActiveBattleScene(true, battleAreaName);
 			ActiveScene = SceneIndex.BattleScene;
 		}
+		battleAreaName = null;
 	}
 	private void RefreshExplorationManagerRef()
 	{
 		ExplorationManager = GameObject.Find("ExplorationManager").GetComponent<ExplorationManager>();
 	}
+
 	private void OnDestroy()
 	{
 		Instance = null;

@@ -23,11 +23,17 @@ public class BattleAreaSelector : MonoBehaviour
 	}
 	public IBattleAreaController GetBattleAreaController(string name)
 	{
-		return BattleArea[name];
+		IBattleAreaController ret;
+		bool areaExists;
+		areaExists = BattleArea.TryGetValue(name, out ret);
+		return areaExists ? ret : null;
 	}
 
 	public GameObject GetBattleAreaGameObject(string name)
 	{
-		return BattleAreaObjects[name];
+		GameObject ret;
+		bool areaExists;
+		areaExists = BattleAreaObjects.TryGetValue(name, out ret);
+		return areaExists ? ret : null;
 	}
 }

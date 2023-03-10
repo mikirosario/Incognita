@@ -9,6 +9,7 @@ using UnityEngine;
 public class Character : MonoBehaviour, ICharacter
 {
 	//[SerializeField] private string _name;
+	[SerializeField] private Animator _animator;
 	[SerializeField] private RuntimeAnimatorController _explorationModeAnimatorController;
 	[SerializeField] private RuntimeAnimatorController _battleModeAnimatorController;
 	[SerializeField] private CharacterScriptable _characterData;
@@ -25,13 +26,12 @@ public class Character : MonoBehaviour, ICharacter
 	public CharacterAttribute Evasion { get { return CharacterData.Evasion; } private set { CharacterData.Evasion = value; } }
 	public uint Level { get { return CharacterData.Level; } private set { CharacterData.Level = value; } }
 	private CharacterScriptable CharacterData { get { return _characterData; } }
-	public Animator Animator { get; private set; }
+	public Animator Animator { get { return _animator; } private set { _animator = value; } }
 	private RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
 	private RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
 
 	private void Awake()
 	{
-		Animator = GetComponent<Animator>();
 		//The time has come. ;p Init(12, 6, 12, 12, 3, 8, 4); //these will probably eventually be supplied by a scriptable object coming from a save file
 	}
 
@@ -90,11 +90,13 @@ public class Character : MonoBehaviour, ICharacter
 	}
 	public void SetExplorationMode()
 	{
+		Debug.Log("set exploration mode called");
 		Animator.runtimeAnimatorController = AnimatorControllerExploration;
 	}
 
 	public void SetBattleMode()
 	{
+		Debug.Log("set battle mode called");
 		Animator.runtimeAnimatorController = AnimatorControllerBattle;
 	}
 

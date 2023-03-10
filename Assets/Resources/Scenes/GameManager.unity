@@ -461,6 +461,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initialScene: Hometown
   _setActiveBattleScene: 0
+  _playableCharacterPrefabs:
+  - {fileID: 1893792513121274563, guid: dcc7c510025839e438680b242a19caf7, type: 3}
 --- !u!4 &2050895692
 Transform:
   m_ObjectHideFlags: 0
