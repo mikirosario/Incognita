@@ -91,13 +91,15 @@ public class Character : MonoBehaviour, ICharacter
 	public void SetExplorationMode()
 	{
 		Debug.Log("set exploration mode called");
-		Animator.runtimeAnimatorController = AnimatorControllerExploration;
+		if (Animator != null)
+			Animator.runtimeAnimatorController = AnimatorControllerExploration;
 	}
 
 	public void SetBattleMode()
 	{
 		Debug.Log("set battle mode called");
-		Animator.runtimeAnimatorController = AnimatorControllerBattle;
+		if (Animator != null)
+			Animator.runtimeAnimatorController = AnimatorControllerBattle;
 	}
 
 	private void Update()

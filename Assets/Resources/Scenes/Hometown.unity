@@ -14092,6 +14092,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kai
       objectReference: {fileID: 0}
+    - target: {fileID: 1893792513121274565, guid: dcc7c510025839e438680b242a19caf7, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1893792513121274567, guid: dcc7c510025839e438680b242a19caf7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7b855f3d3c842e14a8f35ce9a59bfb18, type: 3}
     - target: {fileID: 1893792513121274584, guid: dcc7c510025839e438680b242a19caf7, type: 3}
       propertyPath: m_RootOrder
       value: 0
