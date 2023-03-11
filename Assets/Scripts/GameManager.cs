@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] string _initialScene = "Hometown";
 	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] bool _setActiveBattleScene = false; //<-Debug code
 	[SerializeField] List<GameObject> _playableCharacterPrefabs;
+	[SerializeField] ScreenTransitionController _screenTransitionController;
 	private StringBuilder _defaultBattleArea = new StringBuilder(20);
 	private List<GameObject> PlayableCharacterPrefabs { get { return _playableCharacterPrefabs; } }
 	public static GameManager Instance { get; private set; }
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 	private string InitialScene { get { return _initialScene; } }
 	public bool SetActiveBattleScene { get { return _setActiveBattleScene; } } //<-Debug code
 	private Scene[] LoadedScenes = new Scene[6];
+	public ScreenTransitionController ScreenTransitionController { get { return _screenTransitionController; } private set { _screenTransitionController = value; } }
 	public SceneIndex ActiveScene { get; set; }
 	public BattleManager BattleManager { get; private set; }
 	public ExplorationManager ExplorationManager { get; private set; }
@@ -165,6 +167,21 @@ public class GameManager : MonoBehaviour
 		}
 		battleAreaName = null;
 	}
+
+	private IEnumerator TransitionActiveSceneAsync(IFadeOut fadeOut, IFadeIn fadeIn, SceneIndex sceneIndex, string battleAreaName)
+	{
+		StartCoroutine(fadeOut.Play());
+		while (fadeOut.IsAnimating)
+			yield return null;
+		SetActiveScene(sceneIndex, battleAreaName);
+		StartCoroutine(fadeIn.Play());
+	}
+
+	public void TransitionActiveScene(IFadeOut fadeOut, IFadeIn fadeIn, SceneIndex sceneIndex, string battleAreaName = null)
+	{
+		StartCoroutine(TransitionActiveSceneAsync(fadeOut, fadeIn, sceneIndex, battleAreaName));
+	}
+
 	private void RefreshExplorationManagerRef()
 	{
 		ExplorationManager = GameObject.Find("ExplorationManager").GetComponent<ExplorationManager>();
