@@ -4,15 +4,24 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
-public class Character : MonoBehaviour, ICharacter
+public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 {
-	//[SerializeField] private string _name;
+	private enum CharacterMode
+	{
+		EXPLORATION = 0,
+		BATTLE,
+		NONE
+	}
+	[SerializeField] private CharacterMode _mode = CharacterMode.NONE;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private RuntimeAnimatorController _explorationModeAnimatorController;
 	[SerializeField] private RuntimeAnimatorController _battleModeAnimatorController;
 	[SerializeField] private CharacterScriptable _characterData;
+	[SerializeField] private GameObject _damageNumPrefab;
+	public Transform Transform { get { return this.transform; } }
 	public string Name { get { return CharacterData.Name; } }
 	public Color Color { get { return CharacterData.Color; } private set { CharacterData.Color = value; } }
 	public uint HitPointsMax { get { return CharacterData.HitPointsMax; } private set { CharacterData.HitPointsMax = value; } }
@@ -25,16 +34,51 @@ public class Character : MonoBehaviour, ICharacter
 	public CharacterAttribute HitChance { get { return CharacterData.HitChance; } private set { CharacterData.HitChance = value; } }
 	public CharacterAttribute Evasion { get { return CharacterData.Evasion; } private set { CharacterData.Evasion = value; } }
 	public uint Level { get { return CharacterData.Level; } private set { CharacterData.Level = value; } }
-	private CharacterScriptable CharacterData { get { return _characterData; } }
 	public Animator Animator { get { return _animator; } private set { _animator = value; } }
+	private CharacterScriptable CharacterData { get { return _characterData; } }
 	private RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
 	private RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
+	private CharacterMode Mode { get { return _mode; } set { _mode = value; } }
+	private GameObject DamageNumPrefab { get { return _damageNumPrefab; } }
 
 	private void Awake()
 	{
-		//The time has come. ;p Init(12, 6, 12, 12, 3, 8, 4); //these will probably eventually be supplied by a scriptable object coming from a save file
+		if (GameManager.Instance.ActiveScene.Equals(GameManager.SceneIndex.ExplorationScene))
+			SetExplorationMode();
+		else if (GameManager.Instance.ActiveScene.Equals(GameManager.SceneIndex.BattleScene))
+			SetBattleMode();
 	}
 
+	public IEnumerator AttackTarget(IDestructible target)
+	{
+		if (Mode.Equals(CharacterMode.BATTLE))
+		{
+			List<InputAction> actionList = InputSystemExt.DisableInputs();
+			Vector2 originalPos = this.Transform.position;
+			Vector2 targetPos = new Vector2(target.Transform.position.x - 1f, target.Transform.position.y);
+			Animator.Play("Run_Right_BattleKai");
+			yield return new WaitUntil(() => (Vector2)(this.Transform.position = Vector2.MoveTowards(this.Transform.position, targetPos, 8 * Time.deltaTime)) == targetPos);
+			Animator.Play("Attack_Right_BattleKai");
+			yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+			Animator.Play("Run_Right_BattleKai");
+			//play attack animation
+			//CauseDamage(20, target);
+			//display damage
+			target.DisplayDamage(20);
+			yield return new WaitUntil(() => (Vector2)(this.Transform.position = Vector2.MoveTowards(this.Transform.position, originalPos, 8 * Time.deltaTime)) == originalPos);
+			Animator.Play("Idle_Right_BattleKai");
+			InputSystemExt.EnableInputs(actionList);
+			actionList.Clear();
+			//restore user inputs
+		}
+	}
+
+	public void DisplayDamage(uint damage, DamageNumber.Effect effect = DamageNumber.Effect.SimpleRise)
+	{
+		GameObject damageNumber = Instantiate(DamageNumPrefab, transform);
+		damageNumber.transform.position += new Vector3(0f, 1f, 0f);
+		damageNumber.GetComponent<DamageNumber>().Display(effect, 100);
+	}
 	public void ReceiveDamage(uint damage)
 	{
 		if (HitPointsCurrent > 0)
@@ -49,7 +93,7 @@ public class Character : MonoBehaviour, ICharacter
 			HitPointsCurrent = healing > hitPointsToMax ? HitPointsMax : HitPointsCurrent + healing;
 	}
 
-	public void CauseDamage(uint damage, Character target)
+	public void CauseDamage(uint damage, IDestructible target)
 	{
 		target.ReceiveDamage(damage);
 	}
@@ -90,20 +134,27 @@ public class Character : MonoBehaviour, ICharacter
 	}
 	public void SetExplorationMode()
 	{
-		Debug.Log("set exploration mode called");
+		//Debug.Log("set exploration mode called");
+		if (Mode == CharacterMode.EXPLORATION)
+			return;
 		if (Animator != null)
 			Animator.runtimeAnimatorController = AnimatorControllerExploration;
+		Mode = CharacterMode.EXPLORATION;
 	}
 
 	public void SetBattleMode()
 	{
-		Debug.Log("set battle mode called");
+		//Debug.Log("set battle mode called");
+		if (Mode == CharacterMode.BATTLE)
+			return;
 		if (Animator != null)
 			Animator.runtimeAnimatorController = AnimatorControllerBattle;
+		Mode = CharacterMode.BATTLE;
 	}
 
 	private void Update()
 	{
+		//debug code
 		if (Input.GetKeyDown(KeyCode.Q))
 			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
 		if (Input.GetKeyDown(KeyCode.E))
@@ -112,33 +163,7 @@ public class Character : MonoBehaviour, ICharacter
 			Attack.SetMaxValue(5);
 	}
 }
-public interface ICharacter
-{
-	public string Name { get; }
-	public Color Color { get; }
-	public uint Level { get; }
-	public uint HitPointsMax { get; }
-	public uint HitPointsCurrent { get; }
-	public uint ResonancePointsMax { get; }
-	public uint ResonancePointsCurrent { get; }
-	public CharacterAttribute Attack { get; }
-	public CharacterAttribute Defence { get; }
-	public CharacterAttribute Shield { get; }
-	public CharacterAttribute HitChance { get; }
-	public CharacterAttribute Evasion { get; }
-	public void ReceiveDamage(uint damage);
-	public void CauseDamage(uint damage, Character target);
-	public void ReceiveHealing(uint healing);
-	public void CauseHealing(uint healing, Character target);
-	public void ReceiveAttackModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveDefenceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveShieldModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveHitChanceModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void ReceiveEvasionModifier(CharacterAttribute.Modifier modifier, CharacterAttribute.ModifierType type);
-	public void UseItem(IConsumable item, Character target);
-	public void SetExplorationMode();
-	public void SetBattleMode();
-}
+
 [System.Serializable] public class CharacterAttribute
 {
 	public enum ModifierType

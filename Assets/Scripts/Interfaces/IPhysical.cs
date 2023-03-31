@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Enemy : Character, IMob
+public interface IPhysical
 {
-
+	public Transform Transform { get; }
 }

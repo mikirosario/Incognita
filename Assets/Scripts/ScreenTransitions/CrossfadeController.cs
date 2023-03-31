@@ -48,8 +48,7 @@ public class CrossfadeOut : Crossfade, IFadeOut
 		if (CrossfadeGroup.alpha < 1f)
 		{
 			IsAnimating = true;
-			ActionList = InputSystem.ListEnabledActions();
-			InputSystem.DisableAllEnabledActions();
+			ActionList = InputSystemExt.DisableInputs();
 			CrossfadeGroup.interactable = true;
 			CrossfadeGroup.blocksRaycasts = true;
 			CrossfadeGroup.alpha = 0f;
@@ -64,8 +63,7 @@ public class CrossfadeOut : Crossfade, IFadeOut
 			}
 			CrossfadeGroup.alpha = 1f;
 			Time.timeScale = 1f;
-			foreach (InputAction action in ActionList)
-				action.Enable();
+			InputSystemExt.EnableInputs(ActionList);
 			ActionList.Clear();
 			IsAnimating = false;
 		}
@@ -82,8 +80,7 @@ public class CrossfadeIn : Crossfade, IFadeIn
 		if (CrossfadeGroup.alpha > 0f)
 		{
 			IsAnimating = true;
-			ActionList = InputSystem.ListEnabledActions();
-			InputSystem.DisableAllEnabledActions();
+			ActionList = InputSystemExt.DisableInputs();
 			CrossfadeGroup.alpha = 1f;
 			Time.timeScale = 0;
 			float timer = 0f;
@@ -98,8 +95,7 @@ public class CrossfadeIn : Crossfade, IFadeIn
 			CrossfadeGroup.alpha = 0f;
 			CrossfadeGroup.blocksRaycasts = false;
 			CrossfadeGroup.interactable = false;
-			foreach (InputAction action in ActionList)
-				action.Enable();
+			InputSystemExt.EnableInputs(ActionList);
 			ActionList.Clear();
 			IsAnimating = false;
 		}

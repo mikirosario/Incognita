@@ -167,7 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6282526fb0a4d44c886a5860b7e65f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 2
   _animator: {fileID: 1893792513121274586}
   _explorationModeAnimatorController: {fileID: 9100000, guid: 34ba6325627aa1a4b88ac977d09a896d, type: 2}
   _battleModeAnimatorController: {fileID: 9100000, guid: f5a35c070684e0c4492ac97c5f687bfe, type: 2}
   _characterData: {fileID: 11400000, guid: 8661ec3e28ffb5c4e904410de7004781, type: 2}
+  _damageNumPrefab: {fileID: 4315073976178286968, guid: 188ab9a9444eeac498c84690b11d9866, type: 3}

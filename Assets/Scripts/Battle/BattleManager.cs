@@ -33,6 +33,14 @@ public class BattleManager : MonoBehaviour
 		}
 	}
 
+	public void AttackTarget()
+	{
+		Character selectedPlayer = PlayerParty[0];
+		Character selectedEnemy = EnemyParty[0];
+		Debug.Log("Attacking");
+		StartCoroutine(selectedPlayer.AttackTarget(selectedEnemy));
+	}
+
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
 	{
 		BattleAreasObject.SetActive(doSet);
@@ -115,6 +123,7 @@ public class BattleManager : MonoBehaviour
 		{
 			GameObject enemyPrefab = area.Enemies[Random.Range(0, area.Enemies.Count)]; //enemies currently selected at random, but eventually there should be predefined groups
 			Transform spawnPosition = area.SpawnPointSelector.GetEnemyPosition(area.SpawnPointSelector.EnemyPositionKeys[i]);
+			enemyPrefab.GetComponent<Character>().SetBattleMode();
 			//EnemySpawnPrefabs[i] = new Spawnable(enemyPrefab, spawnPosition);
 			EnemySpawnPrefabs.Add(new Spawnable(enemyPrefab, spawnPosition));
 			enemyPrefab = null;

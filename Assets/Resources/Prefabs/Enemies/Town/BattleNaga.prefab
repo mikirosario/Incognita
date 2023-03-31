@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 1848589309561980368}
   - component: {fileID: 3403370085303664372}
   - component: {fileID: 3563962268909269875}
-  - component: {fileID: 7265542434044491653}
+  - component: {fileID: 3412827043330552891}
+  - component: {fileID: 7773907281163747362}
   m_Layer: 0
   m_Name: BattleNaga
   m_TagString: Untagged
@@ -155,7 +156,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &7265542434044491653
+--- !u!114 &3412827043330552891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4398337426529683068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d9573615d426d47989dac36cade268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7773907281163747362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,7 +180,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86cd5ec7fb002f749abb05680af3ad1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 3563962268909269875}
+  _mode: 2
+  _animator: {fileID: 0}
   _explorationModeAnimatorController: {fileID: 0}
   _battleModeAnimatorController: {fileID: 0}
   _characterData: {fileID: 0}
+  _damageNumPrefab: {fileID: 4315073976178286968, guid: 188ab9a9444eeac498c84690b11d9866, type: 3}
