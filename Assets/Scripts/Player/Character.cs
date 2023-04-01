@@ -62,9 +62,9 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 			yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 			Animator.Play("Run_Right_BattleKai");
 			//play attack animation
-			//CauseDamage(20, target);
+			//CauseDamage(20, target); //need to decide whether to use scriptables for enemies or not
 			//display damage
-			target.DisplayDamage(20);
+			target.DisplayDamage(20, DamageNumber.Type.Posion);
 			yield return new WaitUntil(() => (Vector2)(this.Transform.position = Vector2.MoveTowards(this.Transform.position, originalPos, 8 * Time.deltaTime)) == originalPos);
 			Animator.Play("Idle_Right_BattleKai");
 			InputSystemExt.EnableInputs(actionList);
@@ -73,11 +73,13 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 		}
 	}
 
-	public void DisplayDamage(uint damage, DamageNumber.Effect effect = DamageNumber.Effect.SimpleRise)
+	public void DisplayDamage(uint amount, DamageNumber.Type type = DamageNumber.Type.Damage, DamageNumber.Effect effect = DamageNumber.Effect.SimpleRise)
 	{
-		GameObject damageNumber = Instantiate(DamageNumPrefab, transform);
-		damageNumber.transform.position += new Vector3(0f, 1f, 0f);
-		damageNumber.GetComponent<DamageNumber>().Display(effect, 100);
+		GameObject damageNumberObject = Instantiate(DamageNumPrefab, transform);
+		DamageNumber damageNumberScript = damageNumberObject.GetComponent<DamageNumber>();
+		damageNumberObject.transform.position += new Vector3(0f, 1f, 0f);
+		damageNumberScript.Color = DamageNumber.GetColor(type);
+		damageNumberScript.Display(effect, amount);
 	}
 	public void ReceiveDamage(uint damage)
 	{
