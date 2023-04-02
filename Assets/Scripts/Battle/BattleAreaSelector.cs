@@ -26,6 +26,10 @@ public class BattleAreaSelector : MonoBehaviour
 		IBattleAreaController ret;
 		bool areaExists;
 		areaExists = BattleArea.TryGetValue(name, out ret);
+		if (!areaExists)
+			GameManager.Instance.BattleManager.Error = BattleManager.IAmError.AreaControllerNotFound;
+		else
+			GameManager.Instance.BattleManager.Error = BattleManager.IAmError.None;
 		return areaExists ? ret : null;
 	}
 
@@ -34,6 +38,10 @@ public class BattleAreaSelector : MonoBehaviour
 		GameObject ret;
 		bool areaExists;
 		areaExists = BattleAreaObjects.TryGetValue(name, out ret);
+		if (!areaExists)
+			GameManager.Instance.BattleManager.Error = BattleManager.IAmError.AreaNotFound;
+		else
+			GameManager.Instance.BattleManager.Error = BattleManager.IAmError.None;
 		return areaExists ? ret : null;
 	}
 }

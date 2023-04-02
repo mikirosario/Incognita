@@ -5,9 +5,18 @@ using System.Text;
 
 public class BattleManager : MonoBehaviour
 {
+	public enum IAmError
+	{
+		None = 0,
+		AreaNotFound,
+		AreaControllerNotFound,
+		EnemySpawnsNotFound,
+		PlayerSpawnsNotFound
+	}
 	[SerializeField] private GameObject _battleAreasObject;
 	[SerializeField] private GameObject _battleUIObject;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
+	[SerializeField, ReadOnly] private IAmError _error = IAmError.None;
 	private StringBuilder _currentBattleArea = new StringBuilder(20);
 	private List<Character> _playerParty = new List<Character>(3);
 	private List<Character> _enemyParty = new List<Character>(6);
@@ -19,6 +28,7 @@ public class BattleManager : MonoBehaviour
 	public List<Character> EnemyParty { get { return _enemyParty; } }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
 	public StringBuilder CurrentBattleArea { get { return _currentBattleArea; } }
+	public IAmError Error { get { return _error; } set { _error = value; } }
 
 	private void Awake()
 	{
@@ -31,6 +41,31 @@ public class BattleManager : MonoBehaviour
 			SetActiveBattleScene(true);
 			LoadBattle();
 		}
+	}
+
+	private void DisplayError(string funcName)
+	{
+		StringBuilder errorLog = new StringBuilder(funcName, 50);
+		errorLog.Append(": ");
+		switch (Error)
+		{
+			case IAmError.AreaNotFound:
+				errorLog.Append("Area Not Found");
+				break;
+			case IAmError.AreaControllerNotFound:
+				errorLog.Append("Area Controller Not Found");
+				break;
+			case IAmError.EnemySpawnsNotFound:
+				errorLog.Append("Enemy Spawns Not Found");
+				break;
+			case IAmError.PlayerSpawnsNotFound:
+				errorLog.Append("Player Spawns Not Found");
+				break;
+			default:
+				errorLog.Append("No Error Logged");
+				break;
+		}
+		Debug.LogWarning(errorLog); //replace with popup window
 	}
 
 	public void AttackTarget()
@@ -77,12 +112,19 @@ public class BattleManager : MonoBehaviour
 
 	private void LoadBattle(string areaName = null)
 	{
-		if (areaName == null/* || BattleAreaSelector.BattleAreaObjects[areaName] == null*/) //could be better to allow areaName not found case to throw
+		if (areaName == null)
 			areaName = CurrentBattleArea.ToString();
 		LoadArea(areaName);
-		IBattleAreaController battleAreaController = BattleAreaSelector.GetBattleAreaController(areaName);
-		if (battleAreaController == null || !GetEnemySpawnPrefabs(battleAreaController) || !GetPlayerSpawnPrefabs(battleAreaController))
-			return; //return to previous scene with error log
+		IBattleAreaController battleAreaController;
+		if (!LoadArea(areaName)
+			|| (battleAreaController = BattleAreaSelector.GetBattleAreaController(areaName)) == null
+			|| !GetEnemySpawnPrefabs(battleAreaController)
+			|| !GetPlayerSpawnPrefabs(battleAreaController))
+		{
+			DisplayError("LoadBattle");
+			GameManager.Instance.SetActiveScene(GameManager.SceneIndex.ExplorationScene); //return to previous exploration scene with error log
+			return;
+		}
 		Spawn(PlayerSpawnPrefabs, EnemySpawnPrefabs);
 		areaName = null;
 		battleAreaController = null;
@@ -97,13 +139,19 @@ public class BattleManager : MonoBehaviour
 		EnemySpawnPrefabs.Clear();
 	}
 
-	private void LoadArea(string areaName)
+	private bool LoadArea(string areaName)
 	{
-		UnloadArea(CurrentBattleArea.ToString());
-		CurrentBattleArea.Clear();
-		CurrentBattleArea.Append(areaName);
-		BattleAreaSelector.GetBattleAreaGameObject(CurrentBattleArea.ToString()).SetActive(true);
+		GameObject newArea = BattleAreaSelector.GetBattleAreaGameObject(areaName);
+		if (newArea != null)
+		{
+			UnloadArea(CurrentBattleArea.ToString());
+			CurrentBattleArea.Clear();
+			CurrentBattleArea.Append(areaName);
+			newArea.SetActive(true);
+		}
 		areaName = null;
+		newArea = null;	
+		return Error == IAmError.None ? true : false;
 	}
 
 	private void UnloadArea(string areaName)
@@ -117,7 +165,10 @@ public class BattleManager : MonoBehaviour
 	private bool GetEnemySpawnPrefabs(IBattleAreaController area)
 	{
 		if (area.Enemies.Count < 1)
+		{
+			Error = IAmError.EnemySpawnsNotFound;
 			return false;
+		}
 		int enemyNumber = Random.Range(1, area.SpawnPointSelector.EnemyPositionMax + 1);
 		for (int i = 0; enemyNumber > 0; ++i, --enemyNumber)
 		{
@@ -129,6 +180,7 @@ public class BattleManager : MonoBehaviour
 			enemyPrefab = null;
 			spawnPosition = null;
 		}
+		Error = IAmError.None;
 		return true;
 	}
 
@@ -136,7 +188,10 @@ public class BattleManager : MonoBehaviour
 	{
 		int playerNumber = GameManager.Instance.PlayerPartyPrefabs.Count;
 		if (playerNumber < 1)
+		{
+			Error = IAmError.PlayerSpawnsNotFound;
 			return false;
+		}
 		for (int i = 0; playerNumber > 0; ++i, --playerNumber)
 		{
 			GameObject playerPrefab = GameManager.Instance.PlayerPartyPrefabs[i];
@@ -145,6 +200,7 @@ public class BattleManager : MonoBehaviour
 			playerPrefab = null;
 			spawnPosition = null;
 		}
+		Error = IAmError.None;
 		return true;
 	}
 

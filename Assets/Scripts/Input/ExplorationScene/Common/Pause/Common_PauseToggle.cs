@@ -8,15 +8,16 @@ public class Common_PauseToggle : MonoBehaviour
 	[SerializeField] private PlayerInput _playerInput;
 	private PlayerInput PlayerInput { get { return _playerInput; } }
 	private float UnpausedTimeScale { get; set; }
+	private float ActiveTimeScale { get; set; }
 	public bool Paused { get; private set; }
 	//private InputManager InputManager => GameManager.Instance.InputManager;
 
 	private void Awake()
 	{
+		UnpausedTimeScale = 1f;
+		ActiveTimeScale = UnpausedTimeScale;
 		Paused = false;
-		PlayerInput.actions.FindActionMap("Common").FindAction("PauseToggle").started += OnPauseToggle;
 		PlayerInput.actions.FindActionMap("Common").FindAction("PauseToggle").performed += OnPauseToggle;
-		PlayerInput.actions.FindActionMap("Common").FindAction("PauseToggle").canceled += OnPauseToggle;
 	}
 
 	public void PauseGame(bool doPause)
@@ -26,14 +27,15 @@ public class Common_PauseToggle : MonoBehaviour
 		Paused = doPause;
 		if (Paused == false)
 		{
-			Time.timeScale = UnpausedTimeScale;
+			ActiveTimeScale = UnpausedTimeScale;
+			Time.timeScale = ActiveTimeScale;
 			if (GameManager.Instance.ActiveScene == GameManager.SceneIndex.ExplorationScene)
 				GameManager.Instance.ExplorationManager.InputController.Exploration.PlayerMove.UpdatePlayerInputs();
 				//InputManager.Exploration.PlayerMove.UpdatePlayerInputs(); ACHIPAPI
 		}
 		else
 		{
-			UnpausedTimeScale = Time.timeScale;
+			UnpausedTimeScale = ActiveTimeScale;
 			Time.timeScale = 0;
 		}
 	}

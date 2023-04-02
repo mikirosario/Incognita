@@ -155,15 +155,15 @@ public class GameManager : MonoBehaviour
 	{
 		if (sceneIndex == SceneIndex.ExplorationScene)
 		{
+			ActiveScene = SceneIndex.ExplorationScene;
 			BattleManager.SetActiveBattleScene(false);
 			ExplorationManager.SetActiveExplorationScene(true);
-			ActiveScene = SceneIndex.ExplorationScene;
 		}
 		else
 		{
+			ActiveScene = SceneIndex.BattleScene;
 			ExplorationManager.SetActiveExplorationScene(false);
 			BattleManager.SetActiveBattleScene(true, battleAreaName);
-			ActiveScene = SceneIndex.BattleScene;
 		}
 		battleAreaName = null;
 	}
