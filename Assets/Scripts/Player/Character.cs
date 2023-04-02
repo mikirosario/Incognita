@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 {
-	private enum CharacterMode
+	protected enum CharacterMode
 	{
 		EXPLORATION = 0,
 		BATTLE,
@@ -23,23 +23,23 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	[SerializeField] private GameObject _damageNumPrefab;
 	public Transform Transform { get { return this.transform; } }
 	public string Name { get { return CharacterData.Name; } }
-	public Color Color { get { return CharacterData.Color; } private set { CharacterData.Color = value; } }
-	public uint HitPointsMax { get { return CharacterData.HitPointsMax; } private set { CharacterData.HitPointsMax = value; } }
-	public uint HitPointsCurrent { get { return CharacterData.HitPointsCurrent; } private set { CharacterData.HitPointsCurrent = value; } }
-	public uint ResonancePointsMax { get { return CharacterData.ResonancePointsMax; } private set { CharacterData.ResonancePointsMax = value; } }
-	public uint ResonancePointsCurrent { get { return CharacterData.ResonancePointsCurrent; } private set { CharacterData.ResonancePointsCurrent = value; } }
-	public CharacterAttribute Attack { get { return CharacterData.Attack; } private set { CharacterData.Attack = value; } }
-	public CharacterAttribute Defence { get { return CharacterData.Defence; } private set { CharacterData.Defence = value; } }
-	public CharacterAttribute Shield { get { return CharacterData.Shield; } private set { CharacterData.Shield = value; } }
-	public CharacterAttribute HitChance { get { return CharacterData.HitChance; } private set { CharacterData.HitChance = value; } }
-	public CharacterAttribute Evasion { get { return CharacterData.Evasion; } private set { CharacterData.Evasion = value; } }
-	public uint Level { get { return CharacterData.Level; } private set { CharacterData.Level = value; } }
-	public Animator Animator { get { return _animator; } private set { _animator = value; } }
-	private CharacterScriptable CharacterData { get { return _characterData; } }
-	private RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
-	private RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
-	private CharacterMode Mode { get { return _mode; } set { _mode = value; } }
-	private GameObject DamageNumPrefab { get { return _damageNumPrefab; } }
+	public Color Color { get { return CharacterData.Color; } protected set { CharacterData.Color = value; } }
+	public uint HitPointsMax { get { return CharacterData.HitPointsMax; } protected set { CharacterData.HitPointsMax = value; } }
+	virtual public uint HitPointsCurrent { get { return CharacterData.HitPointsCurrent; } protected set { CharacterData.HitPointsCurrent = value; } }
+	public uint ResonancePointsMax { get { return CharacterData.ResonancePointsMax; } protected set { CharacterData.ResonancePointsMax = value; } }
+	virtual public uint ResonancePointsCurrent { get { return CharacterData.ResonancePointsCurrent; } protected set { CharacterData.ResonancePointsCurrent = value; } }
+	virtual public CharacterAttribute Attack { get { return CharacterData.Attack; } protected set { CharacterData.Attack = value; } }
+	virtual public CharacterAttribute Defence { get { return CharacterData.Defence; } protected set { CharacterData.Defence = value; } }
+	virtual public CharacterAttribute Shield { get { return CharacterData.Shield; } protected set { CharacterData.Shield = value; } }
+	virtual public CharacterAttribute HitChance { get { return CharacterData.HitChance; } protected set { CharacterData.HitChance = value; } }
+	virtual public CharacterAttribute Evasion { get { return CharacterData.Evasion; } protected set { CharacterData.Evasion = value; } }
+	public uint Level { get { return CharacterData.Level; } protected set { CharacterData.Level = value; } }
+	public Animator Animator { get { return _animator; } protected set { _animator = value; } }
+	protected CharacterScriptable CharacterData { get { return _characterData; } }
+	protected RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
+	protected RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
+	protected CharacterMode Mode { get { return _mode; } set { _mode = value; } }
+	protected GameObject DamageNumPrefab { get { return _damageNumPrefab; } }
 
 	private void Awake()
 	{
@@ -53,7 +53,7 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	{
 		if (Mode.Equals(CharacterMode.BATTLE))
 		{
-			List<InputAction> actionList = InputSystemExt.DisableInputs();
+			List<InputAction> inputActions = InputSystemExt.DisableInputs();
 			Vector2 originalPos = this.Transform.position;
 			Vector2 targetPos = new Vector2(target.Transform.position.x - 1f, target.Transform.position.y);
 			Animator.Play("Run_Right_BattleKai");
@@ -62,13 +62,13 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 			yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 			Animator.Play("Run_Right_BattleKai");
 			//play attack animation
-			//CauseDamage(20, target); //need to decide whether to use scriptables for enemies or not
+			CauseDamage(20, target); //need to decide whether to use scriptables for enemies or not
 			//display damage
 			target.DisplayDamage(20, DamageNumber.Type.Posion);
 			yield return new WaitUntil(() => (Vector2)(this.Transform.position = Vector2.MoveTowards(this.Transform.position, originalPos, 8 * Time.deltaTime)) == originalPos);
 			Animator.Play("Idle_Right_BattleKai");
-			InputSystemExt.EnableInputs(actionList);
-			actionList.Clear();
+			InputSystemExt.EnableInputs(inputActions);
+			inputActions.Clear();
 			//restore user inputs
 		}
 	}
@@ -154,16 +154,16 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 		Mode = CharacterMode.BATTLE;
 	}
 
-	private void Update()
-	{
-		//debug code
-		if (Input.GetKeyDown(KeyCode.Q))
-			ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
-		if (Input.GetKeyDown(KeyCode.E))
-			ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
-		if (Input.GetKeyDown(KeyCode.F))
-			Attack.SetMaxValue(5);
-	}
+	//private void Update()
+	//{
+	//	//debug code
+	//	if (Input.GetKeyDown(KeyCode.Q))
+	//		ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
+	//	if (Input.GetKeyDown(KeyCode.E))
+	//		ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
+	//	if (Input.GetKeyDown(KeyCode.F))
+	//		Attack.SetMaxValue(5);
+	//}
 }
 
 [System.Serializable] public class CharacterAttribute

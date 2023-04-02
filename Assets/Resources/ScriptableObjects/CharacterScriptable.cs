@@ -9,44 +9,43 @@ public class CharacterScriptable : ScriptableObject
 	[SerializeField] private Color _color;
 	[SerializeField] uint _level;
 	[Header("Hit Points")]
-	[SerializeField] uint _hitPointsMax;
-	[SerializeField] uint _hitPointsCurrent;
+	[SerializeField, Range(0, 9999)] uint _hitPointsMax;
+	[SerializeField, Range(0, 9999)] uint _hitPointsCurrent;
 	[Header("Resonance Points")]
-	[SerializeField] uint _resonancePointsMax;
-	[SerializeField] uint _resonancePointsCurrent;
+	[SerializeField, Range(0, 9999)] uint _resonancePointsMax;
+	[SerializeField, Range(0, 9999)] uint _resonancePointsCurrent;
 	[Header("Attributes")]
 	[SerializeField] private CharacterAttribute _attack = new CharacterAttribute(null, null, 9999);
-	[ContextMenuItem("Set Attack Max Value", nameof(SetAttackMaxValue))] public uint _newAttackMaxValue = uint.MaxValue;
+	//[ContextMenuItem("Set Attack Max Value", nameof(SetAttackMaxValue))] public uint _newAttackMaxValue = uint.MaxValue;
 	[SerializeField, Space] private CharacterAttribute _defence = new CharacterAttribute(null, null, 9999);
-	[ContextMenuItem("Set Defence Max Value", nameof(SetDefenceMaxValue))] public uint _newDefenceMaxValue = uint.MaxValue;
+	//[ContextMenuItem("Set Defence Max Value", nameof(SetDefenceMaxValue))] public uint _newDefenceMaxValue = uint.MaxValue;
 	[SerializeField, Space] private CharacterAttribute _shield = new CharacterAttribute(null, null, 9999);
-	[ContextMenuItem("Set Shield Max Value", nameof(SetShieldMaxValue))] public uint _newShieldMaxValue = uint.MaxValue;
-	[SerializeField, Space] private CharacterAttribute _hitChance = new CharacterAttribute(null, null, 100);
-	[ContextMenuItem("Set Hit Chance Max Value", nameof(SetHitChanceMaxValue))] public uint _newHitChanceMaxValue = uint.MaxValue;
-	[SerializeField, Space] private CharacterAttribute _evasion = new CharacterAttribute(null, null, 100);
-	[ContextMenuItem("Set Evasion Max Value", nameof(SetEvasionMaxValue))] public uint _newEvasionMaxValue = uint.MaxValue;
+	//[ContextMenuItem("Set Shield Max Value", nameof(SetShieldMaxValue))] public uint _newShieldMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _hitChance = new CharacterAttribute(null, null, 1000);
+	//[ContextMenuItem("Set Hit Chance Max Value", nameof(SetHitChanceMaxValue))] public uint _newHitChanceMaxValue = uint.MaxValue;
+	[SerializeField, Space] private CharacterAttribute _evasion = new CharacterAttribute(null, null, 1000);
+	//[ContextMenuItem("Set Evasion Max Value", nameof(SetEvasionMaxValue))] public uint _newEvasionMaxValue = uint.MaxValue;
 
-	public void SetAttackMaxValue()
-	{
-		Attack.SetMaxValue(_newAttackMaxValue);
-	}
-	public void SetDefenceMaxValue()
-	{
-		Defence.SetMaxValue(_newDefenceMaxValue);
-	}
-	public void SetShieldMaxValue()
-	{
-		Shield.SetMaxValue(_newShieldMaxValue);
-	}
-	public void SetHitChanceMaxValue()
-	{
-		HitChance.SetMaxValue(_newHitChanceMaxValue);
-	}
-
-	public void SetEvasionMaxValue()
-	{
-		Evasion.SetMaxValue(_newEvasionMaxValue);
-	}
+	//public void SetAttackMaxValue()
+	//{
+	//	Attack.SetMaxValue(_newAttackMaxValue);
+	//}
+	//public void SetDefenceMaxValue()
+	//{
+	//	Defence.SetMaxValue(_newDefenceMaxValue);
+	//}
+	//public void SetShieldMaxValue()
+	//{
+	//	Shield.SetMaxValue(_newShieldMaxValue);
+	//}
+	//public void SetHitChanceMaxValue()
+	//{
+	//	HitChance.SetMaxValue(_newHitChanceMaxValue);
+	//}
+	//public void SetEvasionMaxValue()
+	//{
+	//	Evasion.SetMaxValue(_newEvasionMaxValue);
+	//}
 	public string Name { get { return _name; } internal set { _name = value; } }
 	public Color Color { get { return _color; } internal set { _color = value; } }
 	public uint Level { get { return _level; } internal set { _level = value; } }
@@ -81,7 +80,7 @@ public class CharacterScriptable : ScriptableObject
 		//Attack = new CharacterAttribute(null, null, 9999);
 		//Defence = new CharacterAttribute(null, null, 9999);
 		//Shield = new CharacterAttribute(null, null, 9999);
-		//HitChance = new CharacterAttribute(null, null, 100);
-		//Evasion = new CharacterAttribute(null, null, 100);
+		//HitChance = new CharacterAttribute(null, null, 1000);
+		//Evasion = new CharacterAttribute(null, null, 1000);
 	}
 }

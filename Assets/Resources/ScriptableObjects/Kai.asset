@@ -39,13 +39,13 @@ MonoBehaviour:
   _newShieldMaxValue: 9999
   _hitChance:
     _baseAttribute: 75
-    _maxValue: 100
+    _maxValue: 1000
     _bonusList: []
     _malusList: []
-  _newHitChanceMaxValue: 100
+  _newHitChanceMaxValue: 1000
   _evasion:
     _baseAttribute: 1
-    _maxValue: 100
+    _maxValue: 1000
     _bonusList: []
     _malusList: []
-  _newEvasionMaxValue: 100
+  _newEvasionMaxValue: 1000

@@ -184,5 +184,5 @@ MonoBehaviour:
   _animator: {fileID: 0}
   _explorationModeAnimatorController: {fileID: 0}
   _battleModeAnimatorController: {fileID: 0}
-  _characterData: {fileID: 0}
+  _characterData: {fileID: 11400000, guid: f9522a5fbc3ca6e499762309f905e8b5, type: 2}
   _damageNumPrefab: {fileID: 4315073976178286968, guid: 188ab9a9444eeac498c84690b11d9866, type: 3}
