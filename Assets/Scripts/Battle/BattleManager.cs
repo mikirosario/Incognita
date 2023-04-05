@@ -20,12 +20,14 @@ public class BattleManager : MonoBehaviour
 	private StringBuilder _currentBattleArea = new StringBuilder(20);
 	private List<Character> _playerParty = new List<Character>(3);
 	private List<Character> _enemyParty = new List<Character>(6);
+	private List<Character> _turnOrder = new List<Character>(9);//establish turn order by Evasion?
 	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
 	private GameObject BattleUIObject { get { return _battleUIObject; } set { _battleUIObject = value; } }
 	private List<Spawnable> EnemySpawnPrefabs { get; set; }
 	private List<Spawnable> PlayerSpawnPrefabs { get; set; }
 	public List<Character> PlayerParty { get { return _playerParty; } }
 	public List<Character> EnemyParty { get { return _enemyParty; } }
+	public List<Character> TurnOrder { get { return _turnOrder; } private set { _turnOrder = value; } }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
 	public StringBuilder CurrentBattleArea { get { return _currentBattleArea; } }
 	public IAmError Error { get { return _error; } set { _error = value; } }
@@ -110,6 +112,16 @@ public class BattleManager : MonoBehaviour
 		}
 	}
 
+	private void SetTurnOrder() //Will use Evasion (rename to Dexterity?) to establish turn order
+	{
+		TurnOrder.Clear();
+		foreach (Character enemy in EnemyParty)
+			TurnOrder.Add(enemy);
+		foreach (Character player in PlayerParty)
+			TurnOrder.Add(player);
+		TurnOrder.Sort(Comparer<Character>.Create((a, b) => a.Evasion.Attribute.CompareTo(b.Evasion.Attribute)));
+	}
+
 	private void LoadBattle(string areaName = null)
 	{
 		if (areaName == null)
@@ -126,6 +138,7 @@ public class BattleManager : MonoBehaviour
 			return;
 		}
 		Spawn(PlayerSpawnPrefabs, EnemySpawnPrefabs);
+		SetTurnOrder();
 		areaName = null;
 		battleAreaController = null;
 	}
