@@ -21,6 +21,7 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	[SerializeField] private RuntimeAnimatorController _battleModeAnimatorController;
 	[SerializeField] private CharacterScriptable _characterData;
 	[SerializeField] private GameObject _damageNumPrefab;
+	private Action _damageReceivedActions = null;
 	public Transform Transform { get { return this.transform; } }
 	public string Name { get { return CharacterData.Name; } }
 	public Color Color { get { return CharacterData.Color; } protected set { CharacterData.Color = value; } }
@@ -35,7 +36,7 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	virtual public CharacterAttribute Evasion { get { return CharacterData.Evasion; } protected set { CharacterData.Evasion = value; } }
 	public uint Level { get { return CharacterData.Level; } protected set { CharacterData.Level = value; } }
 	public Animator Animator { get { return _animator; } protected set { _animator = value; } }
-	public Action DamageReceived { get; set; }
+	public Action DamageReceivedActions { get { return _damageReceivedActions; } set { _damageReceivedActions = value; } }
 	protected CharacterScriptable CharacterData { get { return _characterData; } }
 	protected RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
 	protected RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
@@ -87,7 +88,7 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 		if (HitPointsCurrent > 0)
 		{
 			HitPointsCurrent = damage > HitPointsCurrent ? 0 : HitPointsCurrent - damage;
-			DamageReceived?.Invoke();
+			DamageReceivedActions?.Invoke();
 		}
 	}
 

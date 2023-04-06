@@ -7,13 +7,13 @@ public class CharacterScriptable : ScriptableObject
 {
 	[SerializeField] private string _name;
 	[SerializeField] private Color _color;
-	[SerializeField] uint _level;
+	[SerializeField] private uint _level;
 	[Header("Hit Points")]
-	[SerializeField, Range(0, 9999)] uint _hitPointsMax;
-	[SerializeField, Range(0, 9999)] uint _hitPointsCurrent;
+	[SerializeField, Range(0, 9999)] private uint _hitPointsMax;
+	[SerializeField, Range(0, 9999)] private uint _hitPointsCurrent;
 	[Header("Resonance Points")]
-	[SerializeField, Range(0, 9999)] uint _resonancePointsMax;
-	[SerializeField, Range(0, 9999)] uint _resonancePointsCurrent;
+	[SerializeField, Range(0, 9999)] private uint _resonancePointsMax;
+	[SerializeField, Range(0, 9999)] private uint _resonancePointsCurrent;
 	[Header("Attributes")]
 	[SerializeField] private CharacterAttribute _attack = new CharacterAttribute(null, null, 9999);
 	//[ContextMenuItem("Set Attack Max Value", nameof(SetAttackMaxValue))] public uint _newAttackMaxValue = uint.MaxValue;
