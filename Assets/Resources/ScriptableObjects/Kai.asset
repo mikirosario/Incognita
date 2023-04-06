@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792b50d6ac01f9142bdcdd05fbdf05d7, type: 3}
   m_Name: Kai
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Kai
   _color: {r: 0.6084906, g: 0.6560858, b: 1, a: 1}
   _level: 1
   _hitPointsMax: 12
@@ -24,28 +24,23 @@ MonoBehaviour:
     _maxValue: 9999
     _bonusList: []
     _malusList: []
-  _newAttackMaxValue: 9999
   _defence:
     _baseAttribute: 6
     _maxValue: 9999
     _bonusList: []
     _malusList: []
-  _newDefenceMaxValue: 9999
   _shield:
     _baseAttribute: 4
     _maxValue: 9999
     _bonusList: []
     _malusList: []
-  _newShieldMaxValue: 9999
   _hitChance:
     _baseAttribute: 75
     _maxValue: 1000
     _bonusList: []
     _malusList: []
-  _newHitChanceMaxValue: 1000
   _evasion:
     _baseAttribute: 1
     _maxValue: 1000
     _bonusList: []
     _malusList: []
-  _newEvasionMaxValue: 1000

@@ -95,11 +95,13 @@ public class BattleActionPanelController : MonoBehaviour
         if (!isSlidingOut)
 		{
             targetReached = () => { return playerSlot.transform.localPosition.x >= targetPos - 1f; };
+            playerSlot.TextObject.color = Color.white;
             //change color to white
 		}
         else
 		{
             targetReached = () => { return playerSlot.transform.localPosition.x <= targetPos + 1f; };
+            playerSlot.TextObject.color = playerSlot.Character.Color;
             //change color to player color;
 		}
         while (isDone == false)

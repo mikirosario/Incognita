@@ -13,8 +13,9 @@ public class BattleManager : MonoBehaviour
 		EnemySpawnsNotFound,
 		PlayerSpawnsNotFound
 	}
+	[SerializeField] private BattleUIController _battleUIController;
 	[SerializeField] private GameObject _battleAreasObject;
-	[SerializeField] private GameObject _battleUIObject;
+	[SerializeField] private GameObject _battleUICanvasObject;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
 	[SerializeField, ReadOnly] private IAmError _error = IAmError.None;
 	private StringBuilder _currentBattleArea = new StringBuilder(20);
@@ -22,7 +23,7 @@ public class BattleManager : MonoBehaviour
 	private List<Character> _enemyParty = new List<Character>(6);
 	private List<Character> _turnOrder = new List<Character>(9);//establish turn order by Evasion?
 	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
-	private GameObject BattleUIObject { get { return _battleUIObject; } set { _battleUIObject = value; } }
+	private GameObject BattleUICanvasObject { get { return _battleUICanvasObject; } set { _battleUICanvasObject = value; } }
 	private List<Spawnable> EnemySpawnPrefabs { get; set; }
 	private List<Spawnable> PlayerSpawnPrefabs { get; set; }
 	public List<Character> PlayerParty { get { return _playerParty; } }
@@ -30,6 +31,7 @@ public class BattleManager : MonoBehaviour
 	public List<Character> TurnOrder { get { return _turnOrder; } private set { _turnOrder = value; } }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
 	public StringBuilder CurrentBattleArea { get { return _currentBattleArea; } }
+	public BattleUIController BattleUIController { get { return _battleUIController; } }
 	public IAmError Error { get { return _error; } set { _error = value; } }
 
 	private void Awake()
@@ -81,7 +83,7 @@ public class BattleManager : MonoBehaviour
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
 	{
 		BattleAreasObject.SetActive(doSet);
-		BattleUIObject.SetActive(doSet);
+		BattleUICanvasObject.SetActive(doSet);
 		if (doSet == false)
 			UnloadBattle();
 		else
@@ -139,6 +141,7 @@ public class BattleManager : MonoBehaviour
 		}
 		Spawn(PlayerSpawnPrefabs, EnemySpawnPrefabs);
 		SetTurnOrder();
+		BattleUIController.StatusMenuController.SetBattleMenu(PlayerParty);
 		areaName = null;
 		battleAreaController = null;
 	}
