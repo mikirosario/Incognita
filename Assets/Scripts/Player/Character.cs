@@ -35,6 +35,7 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	virtual public CharacterAttribute Evasion { get { return CharacterData.Evasion; } protected set { CharacterData.Evasion = value; } }
 	public uint Level { get { return CharacterData.Level; } protected set { CharacterData.Level = value; } }
 	public Animator Animator { get { return _animator; } protected set { _animator = value; } }
+	public Action DamageReceived { get; set; }
 	protected CharacterScriptable CharacterData { get { return _characterData; } }
 	protected RuntimeAnimatorController AnimatorControllerExploration { get { return _explorationModeAnimatorController; } }
 	protected RuntimeAnimatorController AnimatorControllerBattle { get { return _battleModeAnimatorController; } }
@@ -84,7 +85,10 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 	public void ReceiveDamage(uint damage)
 	{
 		if (HitPointsCurrent > 0)
+		{
 			HitPointsCurrent = damage > HitPointsCurrent ? 0 : HitPointsCurrent - damage;
+			DamageReceived?.Invoke();
+		}
 	}
 
 	public void ReceiveHealing(uint healing)
@@ -154,16 +158,22 @@ public class Character : MonoBehaviour, ICharacter, IDestructible, IPhysical
 		Mode = CharacterMode.BATTLE;
 	}
 
-	//private void Update()
-	//{
-	//	//debug code
-	//	if (Input.GetKeyDown(KeyCode.Q))
-	//		ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
-	//	if (Input.GetKeyDown(KeyCode.E))
-	//		ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
-	//	if (Input.GetKeyDown(KeyCode.F))
-	//		Attack.SetMaxValue(5);
-	//}
+	private void OnDestroy()
+	{
+	}
+
+	private void Update()
+	{
+		//debug code
+		//if (Input.GetKeyDown(KeyCode.Q))
+		//	ReceiveAttackModifier(new CharacterAttribute.Modifier("bleh", 10), CharacterAttribute.ModifierType.Malus);
+		//if (Input.GetKeyDown(KeyCode.E))
+		//	ReceiveAttackModifier(new CharacterAttribute.Modifier("blu", 10), CharacterAttribute.ModifierType.Bonus);
+		//if (Input.GetKeyDown(KeyCode.F))
+		//	Attack.SetMaxValue(5);
+		if (Input.GetKeyDown(KeyCode.H))
+			ReceiveDamage(2);
+	}
 }
 
 [System.Serializable] public class CharacterAttribute

@@ -124,8 +124,11 @@ public class BattleActionPanelController : MonoBehaviour
 
 	private void Update()
 	{
+        //Activate player slot
         if (Input.GetKeyDown(KeyCode.Return))
+        {
             ActionPanelSlide();
+        }
 	}
 
     private class ActionPanelSettings

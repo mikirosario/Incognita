@@ -14,7 +14,7 @@ public class HealthBarController : MonoBehaviour
 	
 	public void UpdateHealthBar (Character character)
 	{
-		float fill = character.HitPointsCurrent / character.HitPointsMax;
+		float fill = (float)character.HitPointsCurrent / (float)character.HitPointsMax;
 		Health.fillAmount = fill;
 		HealthVal.text = $"{character.HitPointsCurrent}/{character.HitPointsMax}";
 	}	

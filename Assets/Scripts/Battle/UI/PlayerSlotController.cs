@@ -11,7 +11,7 @@ public class PlayerSlotController : MonoBehaviour
 
 	public TextMeshProUGUI TextObject { get { return _textObject; } }
 	private HealthBarController HealthBarController { get { return _healthBar; } }
-	public Character Character { get { return _character; } set { _character = value; TextObject.text = Character.Name; TextObject.color = Color.white; } }
+	public Character Character { get { return _character; } set { _character = value; TextObject.text = Character.Name; TextObject.color = Color.white; Character.DamageReceived += UpdatePlayerSlot; UpdatePlayerSlot(); } }
 
 	public void UpdatePlayerSlot()
 	{
