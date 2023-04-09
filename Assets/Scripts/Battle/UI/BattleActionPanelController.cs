@@ -51,7 +51,7 @@ public class BattleActionPanelController : MonoBehaviour
 
 
 
-    private IEnumerator ActionPanelSlideToggle()
+    private IEnumerator ActionPanelSlideToggle(PlayerSlotController playerSlot)
 	{
         IsAnimating = true;
         bool isDone = false;
@@ -70,7 +70,7 @@ public class BattleActionPanelController : MonoBehaviour
             //change background color to player color
             EnableToggles();
         }
-        StartCoroutine(PlayerSlotSlideToggle(isSlidingOut));
+        StartCoroutine(PlayerSlotSlideToggle(isSlidingOut, playerSlot));
         while (isDone == false)
         {
             RectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.SmoothDamp(CurrentWidth, targetWidth, ref currentVelocity, SlideDuration));
@@ -84,10 +84,10 @@ public class BattleActionPanelController : MonoBehaviour
         IsAnimating = false;
     }
 
-	private IEnumerator PlayerSlotSlideToggle(bool isSlidingOut)
+	private IEnumerator PlayerSlotSlideToggle(bool isSlidingOut, PlayerSlotController playerSlot)
 	{
         bool isDone = false;
-        PlayerSlotController playerSlot = _statusMenuController.BottomRowController.PlayerSlot0; //get selected player slot
+        //PlayerSlotController playerSlot = _statusMenuController.BottomRowController.PlayerSlot0; //get selected player slot
         float targetDiff = isSlidingOut == true ? ShiftSlotPositionBy * -1f : ShiftSlotPositionBy;
         float targetPos = playerSlot.transform.localPosition.x + targetDiff;
         float currentVelocity = 0.0f;
@@ -116,19 +116,19 @@ public class BattleActionPanelController : MonoBehaviour
 		}
 	}
 
-	public void ActionPanelSlide()
+	public void ActionPanelSlide(PlayerSlotController playerSlot)
 	{
 		if (IsAnimating == false)
-			StartCoroutine(ActionPanelSlideToggle());
+			StartCoroutine(ActionPanelSlideToggle(playerSlot));
 	}
 
 	private void Update()
 	{
-        //Activate player slot
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            ActionPanelSlide();
-        }
+        ////Activate player slot
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    ActionPanelSlide();
+        //}
 	}
 
     private class ActionPanelSettings

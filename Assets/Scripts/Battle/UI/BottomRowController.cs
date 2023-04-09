@@ -10,6 +10,20 @@ public class BottomRowController : MonoBehaviour
 	public PlayerSlotController PlayerSlot1 { get { return _playerSlots[1]; } }
 	public PlayerSlotController PlayerSlot2 { get { return _playerSlots[2]; } }
 
+	public PlayerSlotController GetPlayerSlot(Character player)
+	{
+		PlayerSlotController ret = null;
+		foreach (PlayerSlotController pscontroller in _playerSlots)
+		{
+			if (pscontroller.Character == player)
+			{
+				ret = pscontroller;
+				break;
+			}
+		}
+		return ret;
+	}
+
 	public void SetPlayerSlots(List<Character> playerParty)
 	{
 		for (int i = 0; i < _playerSlots.Count && i < playerParty.Count; ++i)

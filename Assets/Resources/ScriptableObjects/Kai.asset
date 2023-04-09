@@ -40,7 +40,7 @@ MonoBehaviour:
     _bonusList: []
     _malusList: []
   _evasion:
-    _baseAttribute: 1
+    _baseAttribute: 100
     _maxValue: 1000
     _bonusList: []
     _malusList: []

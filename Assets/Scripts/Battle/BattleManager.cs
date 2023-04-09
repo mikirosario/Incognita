@@ -22,16 +22,22 @@ public class BattleManager : MonoBehaviour
 	private List<Character> _playerParty = new List<Character>(3);
 	private List<Character> _enemyParty = new List<Character>(6);
 	private List<Character> _turnOrder = new List<Character>(9);//establish turn order by Evasion?
+	private int _turnOrderIndex;
 	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
 	private GameObject BattleUICanvasObject { get { return _battleUICanvasObject; } set { _battleUICanvasObject = value; } }
 	private List<Spawnable> EnemySpawnPrefabs { get; set; }
 	private List<Spawnable> PlayerSpawnPrefabs { get; set; }
+	private Character CurrentCharacter { get; set; }
+	private Character CurrentSelected { get; set; }
+	private Character NextCharacter { get { return TurnOrder[TurnOrderIndex++]; } }
+	private int TurnOrderIndex { get { return _turnOrderIndex; } set { _turnOrderIndex = value % TurnOrder.Count; } }
 	public List<Character> PlayerParty { get { return _playerParty; } }
 	public List<Character> EnemyParty { get { return _enemyParty; } }
 	public List<Character> TurnOrder { get { return _turnOrder; } private set { _turnOrder = value; } }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
 	public StringBuilder CurrentBattleArea { get { return _currentBattleArea; } }
 	public BattleUIController BattleUIController { get { return _battleUIController; } }
+	public bool IsBattleOver { get; set; } = false;
 	public IAmError Error { get { return _error; } set { _error = value; } }
 
 	private void Awake()
@@ -72,12 +78,26 @@ public class BattleManager : MonoBehaviour
 		Debug.LogWarning(errorLog); //replace with popup window
 	}
 
+	private void NextTurn()
+	{
+		CurrentCharacter = NextCharacter;
+		if (PlayerParty.Contains(CurrentCharacter))
+		{
+			PlayerSlotController psc = BattleUIController.StatusMenuController.BottomRowController.GetPlayerSlot(CurrentCharacter);
+			//ActionPanel setup here, or in slide?
+			BattleUIController.StatusMenuController.BattleActionPanelController.ActionPanelSlide(psc); //Slide out
+		}
+	}
+
 	public void AttackTarget()
 	{
-		Character selectedPlayer = PlayerParty[0];
-		Character selectedEnemy = EnemyParty[0];
+		Character selectedPlayer = CurrentCharacter;
+		Character selectedEnemy = EnemyParty[0]; //character select functionality
+		PlayerSlotController psc = BattleUIController.StatusMenuController.BottomRowController.GetPlayerSlot(CurrentCharacter);
 		Debug.Log("Attacking");
+		BattleUIController.StatusMenuController.BattleActionPanelController.ActionPanelSlide(psc); //Slide in
 		StartCoroutine(selectedPlayer.AttackTarget(selectedEnemy));
+		//NextTurn() //Maybe subscribe this to Action?
 	}
 
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
@@ -121,7 +141,8 @@ public class BattleManager : MonoBehaviour
 			TurnOrder.Add(enemy);
 		foreach (Character player in PlayerParty)
 			TurnOrder.Add(player);
-		TurnOrder.Sort(Comparer<Character>.Create((a, b) => a.Evasion.Attribute.CompareTo(b.Evasion.Attribute)));
+		TurnOrder.Sort(Comparer<Character>.Create((a, b) => b.Evasion.Attribute.CompareTo(a.Evasion.Attribute)));
+		TurnOrderIndex = 0;
 	}
 
 	private void LoadBattle(string areaName = null)
@@ -142,6 +163,7 @@ public class BattleManager : MonoBehaviour
 		Spawn(PlayerSpawnPrefabs, EnemySpawnPrefabs);
 		SetTurnOrder();
 		BattleUIController.StatusMenuController.SetBattleMenu(PlayerParty);
+		NextTurn();
 		areaName = null;
 		battleAreaController = null;
 	}
