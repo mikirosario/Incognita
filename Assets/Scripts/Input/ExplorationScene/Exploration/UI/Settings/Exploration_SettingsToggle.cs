@@ -5,11 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Exploration_SettingsToggle : MonoBehaviour, IMenuToggle
 {
-	[SerializeField] private PlayerInput _playerInput;
 	[SerializeField] private GameObject _settingsPanel;
 
+	private PlayerInput PlayerInput => GameManager.Instance.PlayerInput;
 	private GameObject SettingsPanel { get { return _settingsPanel; } set { _settingsPanel = value; } }
-	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
 	public GameObject GameObject { get { return SettingsPanel; } }
 	public IMenuToggle Next { get; set; }
 	public IMenuToggle Prev { get; set; }

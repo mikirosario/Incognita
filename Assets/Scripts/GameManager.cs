@@ -16,10 +16,11 @@ public class GameManager : MonoBehaviour
 		TitleScene = 4,
 		EndingScene = 5
 	}
-	[SerializeField] string _initialScene = "Hometown";
-	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] bool _setActiveBattleScene = false; //<-Debug code
-	[SerializeField] List<GameObject> _playableCharacterPrefabs;
-	[SerializeField] ScreenTransitionController _screenTransitionController;
+	[SerializeField] private string _initialScene = "Hometown";
+	[SerializeField, Tooltip("When launching Playmode from Unity Editor, set this bool to go to battle scene")] private bool _setActiveBattleScene = false; //<-Debug code
+	[SerializeField] private List<GameObject> _playableCharacterPrefabs;
+	[SerializeField] private ScreenTransitionController _screenTransitionController;
+	[SerializeField] private PlayerInput _playerInput;
 	private StringBuilder _defaultBattleArea = new StringBuilder(20);
 	private List<GameObject> PlayableCharacterPrefabs { get { return _playableCharacterPrefabs; } }
 	public static GameManager Instance { get; private set; }
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
 	public BattleManager BattleManager { get; private set; }
 	public ExplorationManager ExplorationManager { get; private set; }
 	public List<GameObject> PlayerPartyPrefabs { get; private set; }
-
+	public PlayerInput PlayerInput { get { return _playerInput; } }
 	//This is just for use by EditorLoad testing method.
 	//Remove from production.
 	private bool SceneContains<T>(Scene scene) //DEBUG CODE

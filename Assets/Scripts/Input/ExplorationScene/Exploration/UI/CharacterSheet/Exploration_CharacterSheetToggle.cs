@@ -7,15 +7,16 @@ using TMPro;
 
 public class Exploration_CharacterSheetToggle : MonoBehaviour, IMenuToggle
 {
-	[SerializeField] private PlayerInput _playerInput;
+	//[SerializeField] private PlayerInput _playerInput;
 	[SerializeField] private GameObject _characterSheetPanel;
 	[SerializeField] private TextMeshProUGUI	_displayedAttackValue, _displayedDefenceValue,
 												_displayedShieldValue, _displayedHitChanceValue,
 												_displayedEvasionValue, _displayedHitPoints,
 												_displayedResonancePoints;
 	//[SerializeField] private PlayerInput _playerInput;
+	private PlayerInput PlayerInput => GameManager.Instance.PlayerInput;
 	private StringBuilder _stringBuilder = new StringBuilder(20);
-	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
+	//private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
 	private PlayerController PlayerController => GameManager.Instance.ExplorationManager.PlayerController;
 	private TextMeshProUGUI DisplayedAttackValue { get { return _displayedAttackValue; } }
 	private TextMeshProUGUI DisplayedDefenceValue { get { return _displayedDefenceValue; } }

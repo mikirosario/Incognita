@@ -97,9 +97,10 @@ public class BattleManager : MonoBehaviour
 		Debug.Log("Attacking");
 		BattleUIController.StatusMenuController.BattleActionPanelController.ActionPanelSlide(psc); //Slide in
 		StartCoroutine(selectedPlayer.AttackTarget(selectedEnemy));
-		//NextTurn() //Maybe subscribe this to Action?
+		//NextTurn() //Maybe subscribe this to Action or naa?
 	}
 
+	//Always call this first
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
 	{
 		BattleAreasObject.SetActive(doSet);
@@ -145,6 +146,7 @@ public class BattleManager : MonoBehaviour
 		TurnOrderIndex = 0;
 	}
 
+	//Always call this before battle
 	private void LoadBattle(string areaName = null)
 	{
 		if (areaName == null)
@@ -213,7 +215,6 @@ public class BattleManager : MonoBehaviour
 			GameObject enemyPrefab = area.Enemies[Random.Range(0, area.Enemies.Count)]; //enemies currently selected at random, but eventually there should be predefined groups
 			Transform spawnPosition = area.SpawnPointSelector.GetEnemyPosition(area.SpawnPointSelector.EnemyPositionKeys[i]);
 			enemyPrefab.GetComponent<Character>().SetBattleMode();
-			//EnemySpawnPrefabs[i] = new Spawnable(enemyPrefab, spawnPosition);
 			EnemySpawnPrefabs.Add(new Spawnable(enemyPrefab, spawnPosition));
 			enemyPrefab = null;
 			spawnPosition = null;

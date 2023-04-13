@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Common_PauseToggle : MonoBehaviour
 {
-	[SerializeField] private PlayerInput _playerInput;
-	private PlayerInput PlayerInput { get { return _playerInput; } }
+	private PlayerInput PlayerInput => GameManager.Instance.PlayerInput;
 	private float UnpausedTimeScale { get; set; }
 	private float ActiveTimeScale { get; set; }
 	public bool Paused { get; private set; }

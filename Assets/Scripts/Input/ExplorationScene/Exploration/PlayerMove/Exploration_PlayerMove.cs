@@ -9,7 +9,8 @@ public class Exploration_PlayerMove : MonoBehaviour
 	[SerializeField] private Rigidbody2D _rb;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private float _speed = 5f;
-	private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
+	//private PlayerInput PlayerInput { get { return _playerInput; } set { _playerInput = value; } }
+	private PlayerInput PlayerInput => GameManager.Instance.PlayerInput;
 	private Rigidbody2D RigidBody { get { return _rb; } }
 	private Animator Animator { get { return _animator; } }
 	private float Speed { get { return _speed; } }
