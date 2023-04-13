@@ -14,8 +14,7 @@ public class BattleManager : MonoBehaviour
 		PlayerSpawnsNotFound
 	}
 	[SerializeField] private BattleUIController _battleUIController;
-	[SerializeField] private GameObject _battleAreasObject;
-	[SerializeField] private GameObject _battleUICanvasObject;
+	[SerializeField] private GameObject _battleObject;
 	[SerializeField] private BattleAreaSelector _battleAreaSelector;
 	[SerializeField, ReadOnly] private IAmError _error = IAmError.None;
 	private StringBuilder _currentBattleArea = new StringBuilder(20);
@@ -23,8 +22,7 @@ public class BattleManager : MonoBehaviour
 	private List<Character> _enemyParty = new List<Character>(6);
 	private List<Character> _turnOrder = new List<Character>(9);//establish turn order by Evasion?
 	private int _turnOrderIndex;
-	private GameObject BattleAreasObject { get { return _battleAreasObject; } set { _battleAreasObject = value; } }
-	private GameObject BattleUICanvasObject { get { return _battleUICanvasObject; } set { _battleUICanvasObject = value; } }
+	private GameObject BattleObject { get { return _battleObject; } }
 	private List<Spawnable> EnemySpawnPrefabs { get; set; }
 	private List<Spawnable> PlayerSpawnPrefabs { get; set; }
 	private Character CurrentCharacter { get; set; }
@@ -103,8 +101,7 @@ public class BattleManager : MonoBehaviour
 	//Always call this first
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
 	{
-		BattleAreasObject.SetActive(doSet);
-		BattleUICanvasObject.SetActive(doSet);
+		BattleObject.SetActive(doSet);
 		if (doSet == false)
 			UnloadBattle();
 		else
