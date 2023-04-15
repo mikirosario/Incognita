@@ -21,17 +21,19 @@ public class BattleManager : MonoBehaviour
 	private List<Character> _playerParty = new List<Character>(3);
 	private List<Character> _enemyParty = new List<Character>(6);
 	private List<Character> _turnOrder = new List<Character>(9);//establish turn order by Evasion?
+	private List<Character> _verticalPositionOrder = new List<Character>(9);
 	private int _turnOrderIndex;
 	private GameObject BattleObject { get { return _battleObject; } }
 	private List<Spawnable> EnemySpawnPrefabs { get; set; }
 	private List<Spawnable> PlayerSpawnPrefabs { get; set; }
-	private Character CurrentCharacter { get; set; }
 	private Character CurrentSelected { get; set; }
 	private Character NextCharacter { get { return TurnOrder[TurnOrderIndex++]; } }
 	private int TurnOrderIndex { get { return _turnOrderIndex; } set { _turnOrderIndex = value % TurnOrder.Count; } }
+	public Character CurrentCharacter { get; private set; }
 	public List<Character> PlayerParty { get { return _playerParty; } }
 	public List<Character> EnemyParty { get { return _enemyParty; } }
 	public List<Character> TurnOrder { get { return _turnOrder; } private set { _turnOrder = value; } }
+	public List<Character> VerticalPositionOrder { get { return _verticalPositionOrder; } }
 	public BattleAreaSelector BattleAreaSelector { get { return _battleAreaSelector; } }
 	public StringBuilder CurrentBattleArea { get { return _currentBattleArea; } }
 	public BattleUIController BattleUIController { get { return _battleUIController; } }
@@ -87,6 +89,14 @@ public class BattleManager : MonoBehaviour
 		}
 	}
 
+	public void ToggleSelectTarget()
+	{
+		if (!BattleUIController.StatusMenuController.TargetSelectorController.IsSelectorActive)
+			BattleUIController.StatusMenuController.TargetSelectorController.StartSelector(TargetSelectorController.Selectable.LIVE_ENEMIES);
+		else
+			BattleUIController.StatusMenuController.TargetSelectorController.StopSelector();
+	}
+
 	public void AttackTarget()
 	{
 		Character selectedPlayer = CurrentCharacter;
@@ -101,11 +111,12 @@ public class BattleManager : MonoBehaviour
 	//Always call this first
 	public void SetActiveBattleScene(bool doSet, string battleAreaName = null)
 	{
-		BattleObject.SetActive(doSet);
+		BattleObject.SetActive(true);
 		if (doSet == false)
 			UnloadBattle();
 		else
 			LoadBattle(battleAreaName);
+		BattleObject.SetActive(doSet);
 	}
 	public void SetDefaultBattleArea(string area)
 	{
@@ -143,6 +154,16 @@ public class BattleManager : MonoBehaviour
 		TurnOrderIndex = 0;
 	}
 
+	private void SetVerticalPositionOrder()
+	{
+		VerticalPositionOrder.Clear();
+		foreach (Character enemy in EnemyParty)
+			VerticalPositionOrder.Add(enemy);
+		foreach (Character player in PlayerParty)
+			VerticalPositionOrder.Add(player);
+		VerticalPositionOrder.Sort((a, b) => a.transform.position.y.CompareTo(b.transform.position.y));
+	}
+
 	//Always call this before battle
 	private void LoadBattle(string areaName = null)
 	{
@@ -161,6 +182,7 @@ public class BattleManager : MonoBehaviour
 		}
 		Spawn(PlayerSpawnPrefabs, EnemySpawnPrefabs);
 		SetTurnOrder();
+		SetVerticalPositionOrder();
 		BattleUIController.StatusMenuController.SetBattleMenu(PlayerParty);
 		NextTurn();
 		areaName = null;
@@ -268,5 +290,4 @@ public class BattleManager : MonoBehaviour
 			Prefab = null;
 		}
 	}
-
 }

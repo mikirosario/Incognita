@@ -15,6 +15,7 @@ public class ExplorationActionMapController : MonoBehaviour
 
 	private void Awake()
 	{
+		//I made this unused function code to create a circular list of menu toggle options, for scrolling... I think? xD
 		List<IMenuToggle> menuList = new List<IMenuToggle>();
 		IMenuToggle component;
 		for (int i = 0; i < transform.childCount; ++i)

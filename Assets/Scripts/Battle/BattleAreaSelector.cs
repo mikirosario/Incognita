@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class BattleAreaSelector : MonoBehaviour
 {
+	[SerializeField] private BattleRowBounds _backRowEnemy;
+	[SerializeField] private BattleRowBounds _backRowPlayer;
 	public Dictionary<string, IBattleAreaController> BattleArea { get; private set; }
 	public Dictionary<string, GameObject> BattleAreaObjects { get; private set; }
-
+	public BattleRowBounds BackRowEnemy { get { return _backRowEnemy; } }
+	public BattleRowBounds BackRowPlayer { get { return _backRowPlayer; } }
 	private void Awake()
 	{
 		BattleAreaObjects = new Dictionary<string, GameObject>(transform.childCount);
