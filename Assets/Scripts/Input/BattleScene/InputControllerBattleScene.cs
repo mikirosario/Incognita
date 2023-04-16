@@ -13,7 +13,13 @@ public class InputControllerBattleScene : MonoBehaviour
 	}
 	private void OnDisable()
 	{
-		PlayerInput.actions.FindActionMap("Battle").Disable();
-		PlayerInput.actions.FindActionMap("Common").Disable();
+		//When exiting, GameManager scene is unloaded first, so any references
+		//to GameManager become null! O_O Please allow us to specify unloading
+		//order, Unity devs.
+		if (GameManager.Instance != null)
+		{
+			PlayerInput.actions.FindActionMap("Battle").Disable();
+			PlayerInput.actions.FindActionMap("Common").Disable();
+		}
 	}
 }
